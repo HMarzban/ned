@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ned route</title>
+
+    <script >
+            window.addEventListener('DOMContentLoaded', function() {
+                let script = [
+                    "assets/js/jquery-3.3.1.min.js",
+                    "assets/js/ned_router.js",
+                    "assets/js/ned_component.js",
+                ]
+                let path = location.pathname.split('/').length;
+                if( path > 2){
+                    script.forEach(function(val,index){
+                        let script = document.createElement("script");
+                        for(let i = 0 ; i < path -2 ; i++ )
+                            val= '../'+val; 
+                        
+                        script.setAttribute('src',val);
+                        document.head.appendChild(script)
+                    });   
+                }else{
+                    script.forEach(function(val,index){
+                        let script = document.createElement("script");
+                        script.setAttribute('src',val);
+                        document.head.appendChild(script)
+                    });
+                }
+            }, true);
+            window.onload = function() {
+                let val = "assets/js/main.script.js";
+                let _path = location.pathname.split('/').length;
+                if( _path > 2){
+                    let script = document.createElement("script");
+                    for(let i = 0 ; i < _path -2 ; i++ )
+                        val= '../'+val; 
+                    script.setAttribute('src',val);
+                    document.body.appendChild(script);
+                }else{
+                    let script = document.createElement("script");
+                    script.setAttribute('src',val);
+                    document.body.appendChild(script);
+                }
+            };//@window.onload()
+    </script>
+
+</head>
+<body>
+        <a rehf="/">home</a>
+        <br>
+        <a rehf="/about">about</a>
+        <br>
+        <a rehf="/products">product</a>
+        <br>
+        <hr>
+        <a rehf="/posts/archive">archive</a>
+        <br>
+        <a rehf="/posts">posts</a>
+        <br>
+        <a rehf="/posts/archive/test">tesssst</a>
+        <app-head></app-head>
+        <app-root></app-root>
+        <hr>
+        <br>
+        <a href="http://google.com">google</a>
+</body>
+</html>
