@@ -1,10 +1,8 @@
-var gulp = require("gulp");
-var sass = require("gulp-sass");
-var autoprefixer = require("gulp-autoprefixer");
-var nodemon = require("gulp-nodemon");
-var del = require('del');
-
-
+const gulp = require("gulp"),
+        sass = require("gulp-sass"),
+        autoprefixer = require("gulp-autoprefixer"),
+        nodemon = require("gulp-nodemon"),
+        del = require('del');
 
 
 
@@ -71,8 +69,7 @@ gulp.task('watch',function(){
         "app/src/pages/**/*.js"
     ], gulp.parallel('js'));
     
-
-})
+});
 
 gulp.task('nodemon',function(){
 
@@ -89,13 +86,9 @@ gulp.task('nodemon',function(){
         ]
         //tasks:['sass']
       }).on('start', function () {
-        
-
         //it must be here
-        
       }).on('restart', function (e) {
         console.log(e)
-      
         //console.log('Nodemon restarted!');
       });
 })
@@ -142,9 +135,4 @@ gulp.task('start', gulp.series('files', 'clean','scss','js',function(done) {
         //console.log('Nodemon restarted!');
       });
     
-
-
-
 }));
-
-//gulp.task('start', ['serve', 'nodemon']);

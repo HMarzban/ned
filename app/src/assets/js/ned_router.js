@@ -1,6 +1,3 @@
-
-
-
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
@@ -25,22 +22,52 @@
             defualtRoot:"/",
        }
 
-       jQuery.fn.removeAttributes = function() {
+       $.fn.removeAttributes = function() {
             return this.each(function() {
-                var attributes = $.map(this.attributes, function(item) {
+                let attributes = $.map(this.attributes, function(item) {
                 return item.name;
                 });
-                var img = $(this);
+                let el = $(this);
                 $.each(attributes, function(i, item) {
-                img.removeAttr(item);
+                    if(item != 'class')
+                        el.removeAttr(item);
                 });
             });
         }//@JQ.removeAttributes = function()
 
+        if (typeof Object.assign != 'function') {
+            // Must be writable: true, enumerable: false, configurable: true
+            Object.defineProperty(Object, "assign", {
+              value: function assign(target, varArgs) { // .length of function is 2
+                'use strict';
+                if (target == null) { // TypeError if undefined or null
+                  throw new TypeError('Cannot convert undefined or null to object');
+                }
+          
+                let to = Object(target);
+          
+                for (let index = 1; index < arguments.length; index++) {
+                    let nextSource = arguments[index];
+          
+                  if (nextSource != null) { // Skip over if undefined or null
+                    for (let nextKey in nextSource) {
+                      // Avoid bugs when hasOwnProperty is shadowed
+                      if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                        to[nextKey] = nextSource[nextKey];
+                      }
+                    }
+                  }
+                }
+                return to;
+              },
+              writable: true,
+              configurable: true
+            });
+        }//@Object.defineProperty : assign
 
        function _clearAllTimer(){
-            var highestTimeoutId = setTimeout(";");
-            for (var i = 0 ; i < highestTimeoutId ; i++) {
+            let highestTimeoutId = setTimeout(";");
+            for (let i = 0 ; i < highestTimeoutId ; i++) {
                 clearTimeout(i); 
             }
         }//@Function: clearAllTimer()
@@ -57,8 +84,8 @@
         
         function addRoute(_path, _obj){
             if( isObject(_path) ){
-                var key = Object.keys(_path);
-                for(var i = 0; i < key.length; i++ ){
+                let key = Object.keys(_path);
+                for(let i = 0; i < key.length; i++ ){
                   routes[key[i]] = _path[key[i]];
                 }
             }else{
@@ -73,7 +100,7 @@
         //FIXME: dont forget add trycatch for async/await function
         async function navigateTo(_path,_pop){
             if(routes[_path]===undefined)
-               throw Error("Router '"+_path+"' not defind.");
+               throw new Error("Router '"+_path+"' not defind.");
 
             //defualt, for all route we access is true
             let guard = true;
@@ -83,7 +110,7 @@
 
             if(guard){
                 let name = routes[_path].name ? routes[_path].name : _path.replace('/','').replace(/[\/]/g,'-');
-                let state = {"path":_path, "name":name,"location":loadedPathName+_path,"fullPath":location.origin};
+                let state = {"path":_path, "name":name,"location":loadedPathName+_path,"domain":location.origin};
                 let title = routes[_path].name;
                 //let url = loadedPathName+_path;
                 let url = _path;
@@ -109,10 +136,9 @@
 
             //before load new data, Clear all Timer
                 _clearAllTimer();
-
             if(routes[_path].html){
                 $.get(routes[_path].html,function(_data){  
-                    var path = _path != '/' ? _path.replace('/','').replace(/[\/]/g,'-') : routes[_path].name ? routes[_path].name.replace(/\s/g,'') :_path.replace('/','').replace(/[\/]/g,'-');
+                    let path = _path != '/' ? _path.replace('/','').replace(/[\/]/g,'-') : routes[_path].name ? routes[_path].name.replace(/\s/g,'') :_path.replace('/','').replace(/[\/]/g,'-');
                     $(setting.root)
                     .removeAttributes()
                     .attr(path,'')
@@ -122,41 +148,48 @@
                         $(setting.root).append("<script src='"+routes[_path].script+"'><\/script> ");
     
                     if(routes[_path].style)
-                        $(setting.root).append("<link rel='stylesheet'  href='"+routes[_path].style+"' />");
+                        $(setting.root).append("<link rel='stylesheet' type='text/css'  href='"+routes[_path].style+"' />");
                             
-                    if(routes[_path].controller)
-                        routes[_path].controller();
+                    if(routes[_path].controller){
+                        //FIXE: is it true?!
+                        routes[_path].controller.bind(Object.assign(CurrentState))();
+                    }
+                        
                 });
             }else{
-                throw Error("HTML Does not defind.");
+                throw new Error("HTML Does not defind.");
             }
         }//@Function: _loadpage(_path);
     
+       
         //=======================
+
+
+        function reload(){
+            _loadpage(this.state.path)
+        }//@Function: reload current state
+
+        let CurrentState = {
+            reload,
+            state:history.state
+        }
+      
         
     
-        function initial(){
-            if(routes[setting.defualtRoot])
-                _initRouter();
-        }//@Function: initial()
+       
 
         function _initRouter(){
 
             if(setting.customAttributeNavigate){
-                function _navigationBTNs(_e){
-                    _e.preventDefault() 
-                    let path = _e.target.getAttribute(setting.customAttributeNavigate)
-                    _e.setat
+
+                $(document).on('click',`a[${setting.customAttributeNavigate}]` ,function(_e){
+                    _e.preventDefault() ;
+                    let path = $(this).attr('href');
                     navigateTo(path);
-                }// @Function: _navigationBTNs(_e)
-                let navigationBTN = document.querySelectorAll('a['+setting.customAttributeNavigate+']');
-                for( let  i = 0; i < navigationBTN.length ; i++ ){
-                    navigationBTN[i].setAttribute('href',navigationBTN[i].getAttribute(setting.customAttributeNavigate))
-                    navigationBTN[i].addEventListener('click', _navigationBTNs,false);
-                }
+                });
+                
             }//@Condition: if set Custom attribute for navigate throue router, otherwise you can call "navigatTo" manually
     
-            //load first root
 
             let path;
 
@@ -173,22 +206,107 @@
                 let _path = event.state.path;
                 navigateTo(_path, true);
             }     
-        };//@Watch: onpopstate
+        };//@Watch: onpopstate; back and forward browser history button 
                 
+
+        /**      =========        */
+        /**      Component        */
+        /**      =========        */
+
+
+        let components = {};
+
+        function addComponent(_path, _obj){
+            if( isObject(_path) ){
+                let key = Object.keys(_path);
+                for(let i = 0; i < key.length; i++ ){
+                    components[key[i]] = _path[key[i]]
+                }
+            }else{
+                components[_path] = _obj
+            }
+            //initComponent();
+        }//@Function: addRoute(_path, _obj)
+
+        function initComponent(){
+           $(function(){          
+                let key = Object.keys(components);
+                for(let i = 0; i < key.length; i++ ){
+                    _loadComponent(key[i]);
+                }
+            });
+        }//@Function: initComponent()
+
+
+        function _DynamicURL(_path){
+            if(_path.indexOf('./')==0)
+                _path =_path.substring(2);//remove "./"
+            
+            let path = location.pathname.split('/').length;
+            if( path > 2){
+                for(let i = 0 ; i < path -2 ; i++ )
+                    _path= '../'+_path;  
+            }
+           
+            return _path;
+
+        };//@Function: _DynamicURL(_path)
+
+        function _loadComponent(_path){
+
+            if(components[_path].html){
+
+                $.get( _DynamicURL(components[_path].html) ,function(_data){  
+                         
+                        $(_path).html(_data);
+
+                        if(components[_path].style)
+                            $(_path).append("<link rel='stylesheet' type='text/css' href='"+_DynamicURL(components[_path].style)+"' />");
+
+                        if(components[_path].script)
+                            $(_path).append("<script src='"+_DynamicURL(components[_path].script)+"'><\/script> ");
+
+                        if(components[_path].controller)
+                            components[_path].controller();
+
+                });
+            }else{
+                throw new Error("HTML Does not defind.");
+            }
+        }//@Function: _loadComponent()
+
+        function initial(){
+            if(routes[setting.defualtRoot])
+                _initRouter();initComponent();
+        }//@Function: initial()
+
+
+
+
+        const controller = (_controllerName, _callback) =>{
+            if(routes[_controllerName] != undefined)
+                _callback.bind( Object.assign( routes[_controllerName],CurrentState) )();
+            else
+                throw new Error("Controller Name does not find/defind.");
+        }//@Function: controller(_controllerName, _callback())
+
+
+
         return Object.freeze({
             navigateTo,
             config,
             addRoute,
+            addComponent,
             routes,
+            components,
             setting,
-            initial
+            initial,
+            controller
         });
     
     }//@Function: Route()
     
-
     return Router;
-
 })));
 
 

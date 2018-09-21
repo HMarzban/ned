@@ -8,11 +8,11 @@
     <title>Ned route</title>
 
     <script >
+        (function() {
             window.addEventListener('DOMContentLoaded', function() {
                 let script = [
                     "assets/js/jquery-3.3.1.min.js",
-                    "assets/js/ned_router.js",
-                    "assets/js/ned_component.js",
+                    "assets/js/ned_router.js"
                 ]
                 let path = location.pathname.split('/').length;
                 if( path > 2){
@@ -20,18 +20,24 @@
                         let script = document.createElement("script");
                         for(let i = 0 ; i < path -2 ; i++ )
                             val= '../'+val; 
-                        
-                        script.setAttribute('src',val);
+
+                        script.src = val;
+                        script.async = true;
+
                         document.head.appendChild(script)
                     });   
                 }else{
                     script.forEach(function(val,index){
                         let script = document.createElement("script");
-                        script.setAttribute('src',val);
+                        
+                        script.src = val;
+                        script.async = true;
+
                         document.head.appendChild(script)
                     });
                 }
             }, true);
+
             window.onload = function() {
                 let val = "assets/js/main.script.js";
                 let _path = location.pathname.split('/').length;
@@ -39,7 +45,10 @@
                     let script = document.createElement("script");
                     for(let i = 0 ; i < _path -2 ; i++ )
                         val= '../'+val; 
-                    script.setAttribute('src',val);
+
+                    script.src = val;
+                    script.async = false;
+
                     document.body.appendChild(script);
                 }else{
                     let script = document.createElement("script");
@@ -47,22 +56,23 @@
                     document.body.appendChild(script);
                 }
             };//@window.onload()
+        })();
     </script>
 
 </head>
 <body>
-        <a rehf="/">home</a>
+        <a href="/" ndHref>home</a>
         <br>
-        <a rehf="/about">about</a>
+        <a href="/about" ndHref>about</a>
         <br>
-        <a rehf="/products">product</a>
+        <a href="/products" ndHref>product</a>
         <br>
         <hr>
-        <a rehf="/posts/archive">archive</a>
+        <a href="/posts/archive" ndHref>archive</a>
         <br>
-        <a rehf="/posts">posts</a>
+        <a href="/posts" ndHref>posts</a>
         <br>
-        <a rehf="/posts/archive/test">tesssst</a>
+        <a href="/posts/archive/test" ndHref>tesssst</a>
         <app-head></app-head>
         <app-root></app-root>
         <hr>

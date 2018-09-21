@@ -1,13 +1,11 @@
 
-       var app = Router();
+            var app = Router();
 
             app.config({
-                customAttributeNavigate:"rehf",
+                customAttributeNavigate:"ndHref",
                 defualtRoot:'/'
             });
 
-
-            
             app.addRoute({
                 '/':{
                     name:"Dashboard Page",
@@ -27,7 +25,7 @@
                         });
                     },
                     controller:function(err){ 
-                        //console.log(err)
+                        console.log(err)
                         //console.log("/about controller loaded")
                     }
                 },
@@ -63,25 +61,16 @@
             });
             
 
-
-            app.initial();
-           
-            // var component = Component();
-
-            // component.add('app-head',{
-            //     name:"Main Header",
-            //     state:"root",
-            //     html:"components/header/header.component.html",
-            //     //script:"components/header/header.component.js",
-            //     style:"components/header/header.components.css",
-            //     controller:function(){ /*console.log("<app-head> component loaded")*/ },
-               
-            // })
-
-            // console.log( component )
+            app.addComponent('app-head',{
+                name: "Main Header",
+                state:"root",
+                html:"./components/header/header.component.html",
+                script:"./components/header/header.component.js",
+                style:"./components/header/header.components.css",
+                controller:function(){ /*console.log("<app-head> component loaded")*/ }
+            });
 
 
 
-           // console.log( app.routes )
-           // console.log(app.setting)
+           app.initial();
 
