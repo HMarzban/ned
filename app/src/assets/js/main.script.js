@@ -12,7 +12,7 @@
                     html:"./pages/home/home.page.html",
                     script:"./pages/home/home.script.js",
                     style:"./pages/home/home.style.css",
-                    controller:function(){ /*console.log("/ Controller loaded")*/ }
+                    controller:function(){ /*console.log("/ Controller loaded")*/ console.log(this) }
                 },
                 '/about':{
                     name:"About Us",
@@ -26,6 +26,7 @@
                     },
                     controller:function(err){ 
                         console.log(err)
+                        alert(err.message)
                         //console.log("/about controller loaded")
                     }
                 },
@@ -49,14 +50,14 @@
                 },
                 '/posts/archive':{
                     name:"posts archive Page",
-                    html:"../pages/posts/archive/archive.page.html",
-                    script: "../pages/posts/archive/archive.script.js",
-                    style:"../pages/posts/archive/archive.style.css",
+                    html:"./pages/posts/archive/archive.page.html",
+                    script: "./pages/posts/archive/archive.script.js",
+                    style:"./pages/posts/archive/archive.style.css",
                     controller:function(){ /*console.log("/products controller loaded")*/ }
                 },
                 '/posts/archive/test':{
                     name:"posts archive test Page",
-                    html:"../../pages/posts/archive/testRoute/testRoute.page.html",
+                    html:"./pages/posts/archive/testRoute/testRoute.page.html",
                 }
             });
             
@@ -74,3 +75,9 @@
 
            app.initial();
 
+
+
+           app.controller('/',function(){
+               console.log(this)
+               //this.reload();
+           });

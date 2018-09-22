@@ -10,13 +10,13 @@
     <script >
         (function() {
             window.addEventListener('DOMContentLoaded', function() {
-                let script = [
+                let scripts = [
                     "assets/js/jquery-3.3.1.min.js",
                     "assets/js/ned_router.js"
                 ]
                 let path = location.pathname.split('/').length;
                 if( path > 2){
-                    script.forEach(function(val,index){
+                    scripts.forEach(function(val,index){
                         let script = document.createElement("script");
                         for(let i = 0 ; i < path -2 ; i++ )
                             val= '../'+val; 
@@ -27,7 +27,7 @@
                         document.head.appendChild(script)
                     });   
                 }else{
-                    script.forEach(function(val,index){
+                    scripts.forEach(function(val,index){
                         let script = document.createElement("script");
                         
                         script.src = val;

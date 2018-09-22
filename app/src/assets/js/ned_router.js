@@ -17,7 +17,7 @@
 
         let routes = {}
         let setting = {
-            customAttributeNavigate:"ndHref",
+            customAttributeNavigate:"ned-href",
             root:"app-root",
             defualtRoot:"/",
        }
@@ -65,6 +65,21 @@
             });
         }//@Object.defineProperty : assign
 
+
+        function _DynamicURL(_path){
+            if(_path.indexOf('./')==0)
+                _path =_path.substring(2);//remove "./"
+            
+            let path = location.pathname.split('/').length;
+            if( path > 2){
+                for(let i = 0 ; i < path -2 ; i++ )
+                    _path= '../'+_path;  
+            }
+           
+            return _path;
+
+        };//@Function: _DynamicURL(_path)
+
        function _clearAllTimer(){
             let highestTimeoutId = setTimeout(";");
             for (let i = 0 ; i < highestTimeoutId ; i++) {
@@ -79,7 +94,7 @@
         function config(_obj){
             setting.root = _obj.root ? _obj.root : 'app-root';
             setting.defualtRoot = _obj.defualtRoot ? _obj.defualtRoot : '/' ;
-            setting.customAttributeNavigate = _obj.customAttributeNavigate ? _obj.customAttributeNavigate : 'ndHref';
+            setting.customAttributeNavigate = _obj.customAttributeNavigate ? _obj.customAttributeNavigate : 'ned-href';
         }//@Function: config(_obj)
         
         function addRoute(_path, _obj){
@@ -137,7 +152,7 @@
             //before load new data, Clear all Timer
                 _clearAllTimer();
             if(routes[_path].html){
-                $.get(routes[_path].html,function(_data){  
+                $.get(_DynamicURL(routes[_path].html),function(_data){  
                     let path = _path != '/' ? _path.replace('/','').replace(/[\/]/g,'-') : routes[_path].name ? routes[_path].name.replace(/\s/g,'') :_path.replace('/','').replace(/[\/]/g,'-');
                     $(setting.root)
                     .removeAttributes()
@@ -145,10 +160,10 @@
                     .html(_data);
                  
                     if(routes[_path].script)
-                        $(setting.root).append("<script src='"+routes[_path].script+"'><\/script> ");
+                        $(setting.root).append("<script src='"+_DynamicURL(routes[_path].script)+"'><\/script> ");
     
                     if(routes[_path].style)
-                        $(setting.root).append("<link rel='stylesheet' type='text/css'  href='"+routes[_path].style+"' />");
+                        $(setting.root).append("<link rel='stylesheet' type='text/css'  href='"+_DynamicURL(routes[_path].style)+"' />");
                             
                     if(routes[_path].controller){
                         //FIXE: is it true?!
@@ -238,19 +253,7 @@
         }//@Function: initComponent()
 
 
-        function _DynamicURL(_path){
-            if(_path.indexOf('./')==0)
-                _path =_path.substring(2);//remove "./"
-            
-            let path = location.pathname.split('/').length;
-            if( path > 2){
-                for(let i = 0 ; i < path -2 ; i++ )
-                    _path= '../'+_path;  
-            }
-           
-            return _path;
-
-        };//@Function: _DynamicURL(_path)
+       
 
         function _loadComponent(_path){
 
