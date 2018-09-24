@@ -21,19 +21,16 @@
             root:"app-root",
             defualtRoot:"/",
        }
-
-       $.fn.removeAttributes = function() {
-            return this.each(function() {
-                let attributes = $.map(this.attributes, function(item) {
-                return item.name;
-                });
-                let el = $(this);
-                $.each(attributes, function(i, item) {
-                    if(item != 'class')
-                        el.removeAttr(item);
-                });
-            });
-        }//@JQ.removeAttributes = function()
+    
+       function $insertHTML(_el,_content,_targer,_isRemove){
+            _isRemove = _isRemove == undefined ? true : false;
+            //first remove all node
+            if(_isRemove)
+                while (_el.lastChild) _el.removeChild(_el.lastChild);
+            //then insert it
+            _targer = _targer ? _targer : "afterbegin";
+           _el.insertAdjacentHTML(_targer, _content);
+       }//@Function: insertHTML(element, content, target)
 
         if (typeof Object.assign != 'function') {
             // Must be writable: true, enumerable: false, configurable: true
@@ -111,7 +108,7 @@
                // _initRouter();
         }//@Function: addRoute(_path, _obj)
 
-    
+       
         //FIXME: dont forget add trycatch for async/await function
         async function navigateTo(_path,_pop){
             if(routes[_path]===undefined)
@@ -123,9 +120,11 @@
             if(routes[_path].guard !== undefined)
                 guard =  await routes[_path].guard();
 
+            let lastPath = history.state ? history.state.path : "/" ;
+
             if(guard){
                 let name = routes[_path].name ? routes[_path].name : _path.replace('/','').replace(/[\/]/g,'-');
-                let state = {"path":_path, "name":name,"location":loadedPathName+_path,"domain":location.origin};
+                let state = {"lastPath":lastPath,"path":_path, "name":name,"location":loadedPathName+_path,"domain":location.origin};
                 let title = routes[_path].name;
                 //let url = loadedPathName+_path;
                 let url = _path;
@@ -145,32 +144,53 @@
                routes[_path].controller(err);
             }
         }//@Function: navigateTo(_path)
-    
+        
+       function craetPathAttr(_path){
+            return _path != '/' ? _path.replace('/','').replace(/[\/]/g,'-') : routes[_path].name ? routes[_path].name.replace(/\s/g,'') :_path.replace('/','').replace(/[\/]/g,'-');
+       }
+
+
+       function $ajax(_method,_url,_callback){
+            let request = new XMLHttpRequest();
+            request.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    _callback( this.responseText );
+                }
+            };
+            //TODO: cheack it in large and complex scenario third parameter,
+            //witch is for async and sync.
+            request.open(_method, _url, true);
+            request.send();
+       };//@Function: $ajax(methid, url, callback)
       
         function _loadpage(_path){
-
             //before load new data, Clear all Timer
-                _clearAllTimer();
+            _clearAllTimer();
             if(routes[_path].html){
-                $.get(_DynamicURL(routes[_path].html),function(_data){  
-                    let path = _path != '/' ? _path.replace('/','').replace(/[\/]/g,'-') : routes[_path].name ? routes[_path].name.replace(/\s/g,'') :_path.replace('/','').replace(/[\/]/g,'-');
-                    $(setting.root)
-                    .removeAttributes()
-                    .attr(path,'')
-                    .html(_data);
-                 
+                $ajax("GET", _DynamicURL(routes[_path].html), function(_data){
+
+                   let tag = document.querySelector(setting.root);
+                   let path = craetPathAttr(_path);
+                   let lastPath = craetPathAttr(history.state.lastPath);
+
+                   tag.removeAttribute(lastPath);
+                   $insertHTML(tag, _data);
+                   tag.setAttribute(path,'');
+        
+                   
                     if(routes[_path].script)
-                        $(setting.root).append("<script src='"+_DynamicURL(routes[_path].script)+"'><\/script> ");
+                        $insertHTML(tag,"<script src='"+_DynamicURL(routes[_path].script)+"'><\/script>","beforeend",false)
     
                     if(routes[_path].style)
-                        $(setting.root).append("<link rel='stylesheet' type='text/css'  href='"+_DynamicURL(routes[_path].style)+"' />");
+                        $insertHTML(tag,"<link rel='stylesheet' type='text/css'  href='"+_DynamicURL(routes[_path].style)+"' />","beforeend",false)
+
                             
                     if(routes[_path].controller){
-                        //FIXE: is it true?!
+                        //FIXME: is it true?!
                         routes[_path].controller.bind(Object.assign(CurrentState))();
                     }
-                        
-                });
+           
+                });//@AjaxCall
             }else{
                 throw new Error("HTML Does not defind.");
             }
@@ -190,18 +210,23 @@
         }
       
         
-    
-       
 
         function _initRouter(){
 
             if(setting.customAttributeNavigate){
 
-                $(document).on('click',`a[${setting.customAttributeNavigate}]` ,function(_e){
-                    _e.preventDefault() ;
-                    let path = $(this).attr('href');
-                    navigateTo(path);
-                });
+                let $hrefTag = document.body;
+                $hrefTag.addEventListener("click", clickATag, false);
+
+                function clickATag(e){
+                    if(e.target.tagName.toLowerCase() == 'a'&& e.target.getAttribute('ndhref') != null  ){
+                        e.preventDefault();
+                        let path = e.target.getAttribute("href");
+                        navigateTo(path);
+                    }
+                    e.stopPropagation();
+                }//@Function: clickATag()
+
                 
             }//@Condition: if set Custom attribute for navigate throue router, otherwise you can call "navigatTo" manually
     
@@ -244,12 +269,12 @@
         }//@Function: addRoute(_path, _obj)
 
         function initComponent(){
-           $(function(){          
+           // if(document.readyState === 'complete'){  
                 let key = Object.keys(components);
                 for(let i = 0; i < key.length; i++ ){
                     _loadComponent(key[i]);
                 }
-            });
+            //};
         }//@Function: initComponent()
 
 
@@ -259,20 +284,23 @@
 
             if(components[_path].html){
 
-                $.get( _DynamicURL(components[_path].html) ,function(_data){  
-                         
-                        $(_path).html(_data);
+                $ajax("GET", _DynamicURL(components[_path].html), function(_data){
+
+
+                        let tag = document.querySelector(_path)
+                        $insertHTML(tag, _data);
 
                         if(components[_path].style)
-                            $(_path).append("<link rel='stylesheet' type='text/css' href='"+_DynamicURL(components[_path].style)+"' />");
+                            $insertHTML(tag,"<link rel='stylesheet' type='text/css' href='"+_DynamicURL(components[_path].style)+"' />","beforeend",false)
 
                         if(components[_path].script)
-                            $(_path).append("<script src='"+_DynamicURL(components[_path].script)+"'><\/script> ");
+                            $insertHTML(tag,"<script src='"+_DynamicURL(components[_path].script)+"'><\/script>","beforeend",false)
+                            
 
                         if(components[_path].controller)
                             components[_path].controller();
 
-                });
+                });//@Ajax Call
             }else{
                 throw new Error("HTML Does not defind.");
             }

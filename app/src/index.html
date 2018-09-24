@@ -7,57 +7,52 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ned route</title>
 
-    <script >
-        (function() {
-            window.addEventListener('DOMContentLoaded', function() {
-                let scripts = [
-                    "assets/js/jquery-3.3.1.min.js",
-                    "assets/js/ned_router.js"
-                ]
-                let path = location.pathname.split('/').length;
-                if( path > 2){
-                    scripts.forEach(function(val,index){
-                        let script = document.createElement("script");
-                        for(let i = 0 ; i < path -2 ; i++ )
-                            val= '../'+val; 
+    <script>
 
-                        script.src = val;
-                        script.async = true;
+        function _DynamicURL(_path){
+            if(_path.indexOf('./')==0)
+                _path =_path.substring(2);//remove "./"
+            
+            let path = location.pathname.split('/').length;
+            if( path > 2){
+                for(let i = 0 ; i < path -2 ; i++ )
+                    _path= '../'+_path;  
+            }
+            return _path;
+        };//@Function: _DynamicURL(_path)
 
-                        document.head.appendChild(script)
-                    });   
-                }else{
-                    scripts.forEach(function(val,index){
-                        let script = document.createElement("script");
-                        
-                        script.src = val;
-                        script.async = true;
 
-                        document.head.appendChild(script)
-                    });
-                }
-            }, true);
 
-            window.onload = function() {
-                let val = "assets/js/main.script.js";
-                let _path = location.pathname.split('/').length;
-                if( _path > 2){
-                    let script = document.createElement("script");
-                    for(let i = 0 ; i < _path -2 ; i++ )
-                        val= '../'+val; 
-
-                    script.src = val;
-                    script.async = false;
-
+        function RouteVendorScript(_targer,_list){
+            _list.forEach(function(val,index){
+                let script = document.createElement("script");
+                script.src = _DynamicURL(val);
+                script.async = false;
+                if(_targer == "head")
+                    document.head.appendChild(script);
+                else 
                     document.body.appendChild(script);
-                }else{
-                    let script = document.createElement("script");
-                    script.setAttribute('src',val);
-                    document.body.appendChild(script);
-                }
-            };//@window.onload()
-        })();
+            });
+        };//@Function: _DynamicURL(_path)
+
+        //befor every things start load Ned-route
+        document.addEventListener("readystatechange",function(){
+            //this code invoke before "DOMContentLoaded"
+            if(document.readyState == "interactive"){
+                RouteVendorScript("head",["./assets/js/ned_router.js"]);
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function(event) {
+            RouteVendorScript("body",[ 
+                "./assets/js/main.script.js",
+                "./assets/js/jquery-3.3.1.min.js"
+            ]);
+        });
+        
     </script>
+
+   
 
 </head>
 <body>
@@ -74,9 +69,21 @@
         <br>
         <a href="/posts/archive/test" ndHref>tesssst</a>
         <app-head></app-head>
-        <app-root></app-root>
+        <app-root  id="one" class="root"></app-root>
         <hr>
         <br>
         <a href="http://google.com">google</a>
+        
+
+
+        <script >
+           
+            
+                
+         
+                
+           
+         
+        </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
             var app = Router();
 
             app.config({
-                customAttributeNavigate:"ndHref",
+                customAttributeNavigate:"ndhref",
                 defualtRoot:'/'
             });
 
