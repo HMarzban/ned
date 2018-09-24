@@ -178,8 +178,11 @@
                    tag.setAttribute(path,'');
         
                    
-                    if(routes[_path].script)
-                        $insertHTML(tag,"<script src='"+_DynamicURL(routes[_path].script)+"'><\/script>","beforeend",false)
+                    if(routes[_path].script){
+                        let script = document.createElement("script");
+                        script.src = _DynamicURL(routes[_path].script);
+                        tag.appendChild(script);
+                    }
     
                     if(routes[_path].style)
                         $insertHTML(tag,"<link rel='stylesheet' type='text/css'  href='"+_DynamicURL(routes[_path].style)+"' />","beforeend",false)
@@ -219,7 +222,7 @@
                 $hrefTag.addEventListener("click", clickATag, false);
 
                 function clickATag(e){
-                    if(e.target.tagName.toLowerCase() == 'a'&& e.target.getAttribute('ndhref') != null  ){
+                    if(e.target.tagName.toLowerCase() == 'a'&& e.target.getAttribute(setting.customAttributeNavigate) != null  ){
                         e.preventDefault();
                         let path = e.target.getAttribute("href");
                         navigateTo(path);
@@ -293,9 +296,12 @@
                         if(components[_path].style)
                             $insertHTML(tag,"<link rel='stylesheet' type='text/css' href='"+_DynamicURL(components[_path].style)+"' />","beforeend",false)
 
-                        if(components[_path].script)
-                            $insertHTML(tag,"<script src='"+_DynamicURL(components[_path].script)+"'><\/script>","beforeend",false)
-                            
+                        if(components[_path].script){
+                            let script = document.createElement("script");
+                            script.src = _DynamicURL(components[_path].script);
+                            tag.appendChild(script);
+                        }
+                          
 
                         if(components[_path].controller)
                             components[_path].controller();

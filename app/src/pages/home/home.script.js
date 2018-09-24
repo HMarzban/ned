@@ -1,3 +1,3 @@
 (function(){
-    // console.log("readyyyyy")
+ console.log("readyyyyy")
 })()
