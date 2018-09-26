@@ -1,4 +1,4 @@
-
+var globaleee = "HI Hossein"
             var app = Router();
 
             app.config({
@@ -78,6 +78,6 @@
 
 
            app.controller('/',function(){
-               console.log(this)
+              // console.log(this)
                //this.reload();
            });

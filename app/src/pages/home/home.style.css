@@ -1,3 +1,8 @@
-[home]{
+[dashboardpage]{
     color:black;
+}
+
+[dashboardpage] chart-static{
+    width: 200px;height: 100px;border:2px solid orangered;
+    border-radius: 3px;display: inline-block;overflow: auto;margin:6px;
 }
