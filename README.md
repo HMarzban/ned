@@ -1,17 +1,23 @@
 
 ## Ned-Router
-Light Router and Component Library
-Base on `jquery` Library ( plane to change this dependency ).
+Super Light Router and Component Library with VanilaJS ( JavaScript Native ).
+~~Base on `jquery` Library ( plane to change this dependency )~~.
 
 I like SPA ( single-page application ) application and always inspire it how can we control our all application just in one page, now time we have a lot of library and framework like <a href="https://www.emberjs.com/">Ember</a>, <a href="https://angular.io/">Angular</a>,  <a href="https://reactjs.org/">react</a>, <a href="https://vuejs.org/">Vuejs</a> and so on, all these are awesome and admirable.
 but...
 
-It just start of Ned-route.
+It just start of Ned Library.
 always want controller my own dependency injection like `style` and `script` and when route change remove all back injection and load just that rout dependencies i invoke it. 
 
-
+### Featur Track in library:
+ 1. Router
+ 2. Module
+ 3. Component
+ 4. PubSub
+ 5. Mixing
 
 ## How use it
+
 In the  `./app/src/index.html` file, where `DOMContentLoaded` Block, add your Script files URL you wanna load in "scripts" Array variable, this `eventListener` load script in `<head/>` tag .
 
 ``` javascript
@@ -170,13 +176,73 @@ Also through `this` in controller function you can access this properties:
   style:  "./pages/home/home.style.css",
   state: {path:"/", name:"Dashboard Page", location"/",domain:"http://localhost:600"},
   controller:  ƒ (),
+  module: {store:  {…},  add:  ƒ,  initial:  ƒ},
   reload:  ƒ reload() // reload current state
  }
 ```
+each `controller` and `component` through `this` in access you to create `module`,
+`module` it small piece of your component for tears down you component in small piece and functionality and better maintaining your application.
+`module` load after component loaded completely.
 
+#### How create new `module`?
+``` javascript
+/** 
+* Path: ./app/pages/user/dashboard/dashboard.script.js 
+* Description: user Page script dependency injection. 
+* How we can creat new module?
+*/
+app.controller('/user/dashboard',function(){
+	let _self = this;
+	
+	this.module.add({
+		tag:"chart-static",
+		html:"./pages/home/chartLine.module/chartLine.index.module.html",
+		script:"/pages/home/chartLine.module/chartLine.script.module.js",
+		style:"/pages/home/chartLine.module/chartLine.style.module.css",
+		//controller:chart_staticController
+	})
+	
+	//your Page Logic controller codes.
+	..
+	..
+	
+}); //@Function: userDashboard Controller
+
+```
+As description of module, we can have more than one tag of module so we can access it by controller for each tag:
+``` javascript
+	let  chart  =  document.getElementsByTagName('chart-static');
+    console.log(chart) // it gave me array of tags
+	
+	//or
+	document.getElementsBytagName('chart-static')[0].controller(function(){
+		//do your login for first module tag
+		//for access more functionality you can use "this" for like: 
+		//PubSub and so on.
+	});
+
+	chart[0].controller(function(){
+		var  _self  =  this
+		chart[0].innerHTML  =  "chart-static one";
+	});
+
+	chart[1].controller(function(){
+		var  _self  =  this;
+		chart[1].innerHTML  =  "chart-static two";
+	});
+
+	chart[2].controller(function(){
+		var  _self  =  this;
+		chart[2].innerHTML  =  "chart-static three";
+	});
+```
+througth `this ` in controller you can access these object:
+//////=================>to be continue.
 ## Component
 coming soon
 
+## Module
+coming soon
 
 ## Run
 `npm start`
@@ -193,17 +259,11 @@ coming soon
 
 
 
-
-
-
-
-
-
 what's next:
 Add `cli` for controller better  project.
 Develop  and add `compponet`, `module & plugin` features, for tears project in small pieces for clear and maintable continuous development. 
 Develop in Es6 and maybe in Typescript.
 and so good and useful feature.
 
-Better mention,  I do not plane to add engine template, just router and simple component. And for DOM manipulation i like use JQUERY.
+Better mention,  I do not plane to add engine template, just router and component. And for DOM manipulation you can use JQUERY or VanilaJs ( JS native ) or what ever library exist for manipulating DOM .
 
