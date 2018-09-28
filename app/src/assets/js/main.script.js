@@ -64,14 +64,19 @@ var globaleee = "HI Hossein"
 
             app.addComponent('app-head',{
                 name: "Main Header",
-                state:"root",
                 html:"./components/header/header.component.html",
                 script:"./components/header/header.component.js",
                 style:"./components/header/header.components.css",
                 controller:function(){ /*console.log("<app-head> component loaded")*/ }
             });
 
-
+            app.addComponent('app-footer',{
+                name:"Main Footer",
+                html:"./components/footer/footer.component.html",
+                script:"./components/footer/footer.component.script.js",
+                style:"./components/footer/footer.component.style.css",
+                controller:function(){ /*console.log("<app-head> component loaded")*/ }
+            })
 
            app.initial();
 

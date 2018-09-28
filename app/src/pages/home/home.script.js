@@ -1,5 +1,4 @@
-
-app.component.controller(function(){
+app.route.controller(function(){
     var _self = this
 
 
@@ -19,6 +18,4 @@ app.component.controller(function(){
     })
 
 
-
-
-})
+});//@component.controller

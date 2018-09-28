@@ -32,7 +32,7 @@ app.module.controller(function(){
 
 
 
-});
+});//@module.controller
 
 
 

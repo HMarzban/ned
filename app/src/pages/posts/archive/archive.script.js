@@ -1,5 +1,3 @@
-
-
-app.component.controller(function(){
+app.route.controller(function(){
     console.log("Archive controller Loaded.")
-})
+});//@component.controller

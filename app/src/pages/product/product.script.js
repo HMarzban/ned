@@ -1,3 +1,3 @@
-(function(){
-    // console.log("readyyyyy")
-})()
+app.route.controller(function(){
+    console.log("Product controller Loaded.")
+});//@component.controller

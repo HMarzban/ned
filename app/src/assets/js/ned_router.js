@@ -9,7 +9,9 @@
     //it's work like pubsub pattern.
     let map_controller = {
         module:{},
-        components:{}
+        components:{},
+        routes:{}
+
     }
     //privite Scope
     let scriptsLoaded = {}
@@ -82,7 +84,7 @@
      */
 
 
-    var pubsub = {
+    const pubsub = {
         events: {},
         on: function (eventName, fn) {
 
@@ -198,8 +200,6 @@
         } //@Function: _loadStatic()
 
 
-  
-
         //TODO: find way to work this?!?!?!
         // we have  problem when injection done and that injection 
         // stick in DOM and every time i can not remove it or replace it.
@@ -224,14 +224,11 @@
         } //@Function: initial()
 
 
-
-
         return Object.seal({
-            store: {},
             add,
             initial
         })
-    }
+    };
 
 
 
@@ -241,15 +238,11 @@
 
         let loadedPathName;
         let pathss = location.pathname.split('/').length;
-        if (pathss > 2) {
-            loadedPathName = location.pathname
-        } else {
+        if (pathss > 2) 
+            loadedPathName = location.pathname;
+         else 
             loadedPathName = location.pathname.substring(0, location.pathname.lastIndexOf("/"));
-        }
-
-
-     
-
+        
 
         if (typeof Object.assign != 'function') {
             // Must be writable: true, enumerable: false, configurable: true
@@ -280,9 +273,6 @@
                 configurable: true
             });
         } //@Object.defineProperty : assign
-
-
-
 
 
         function config(_obj) {
@@ -350,8 +340,6 @@
         }
 
 
-
-
         function _loadpage(_path) {
             //before load new data, Clear all Timer
             _clearAllTimer();
@@ -374,7 +362,10 @@
                         tag.appendChild(script);
                         scriptsLoaded[routes[_path].script] = true;
                     }else{
-                        map_controller.components[_path](); 
+                        
+                        if(routes[_path].script)
+                            map_controller.routes[_path][0](); 
+
                     }
 
                     if (routes[_path].style)
@@ -383,12 +374,8 @@
                     
 
                     if (routes[_path].controller) {
-                        //FIXME: is it true?!
-                        //
-                        //CurrentState.bind(Object.assign(new module())).
+         
                         CurrentState["module"] = module();
-                        // Object.assign(CurrentState["module"], {state:history.state} );
-
                         routes[_path].controller.bind(Object.assign(CurrentState))();
                     }
 
@@ -401,7 +388,6 @@
 
         //=======================
 
-
         function reload() {
             _loadpage(this.state.path)
         } //@Function: reload current state
@@ -411,7 +397,6 @@
             state: history.state,
             pubsub
         }
-
 
 
         function _initRouter() {
@@ -456,9 +441,6 @@
         /**      Component        */
         /**      =========        */
 
-
-
-
         function addComponent(_path, _obj) {
             if (isObject(_path)) {
                 let key = Object.keys(_path);
@@ -481,14 +463,11 @@
         } //@Function: initComponent()
 
 
-
-
         function _loadComponent(_path) {
 
             if (components[_path].html) {
 
                 $ajax("GET", _DynamicURL(components[_path].html), function (_data) {
-
 
                     let tag = document.querySelector(_path)
                     $insertHTML(tag, _data);
@@ -520,18 +499,7 @@
 
 
        
-
-/*        const controller = function (_controllerName, _callback) {
-            
-            if (routes[_controllerName] != undefined)
-                _callback.bind(Object.assign(routes[_controllerName], CurrentState))();
-            else
-                throw new Error("Controller Name does not find/defind.");
-
-        }*/ //@Function: controller(_controllerName, _callback())
-
-       
-
+    var fl = 0
 
         return Object.freeze({
             navigateTo,
@@ -542,18 +510,34 @@
             components,
             setting,
             initial,
-            //controller,
+            route:{
+                controller: function(_callback){
+                    let _controllerName = history.state.path;
+
+                    //TODO: add way to find witch function for component and root
+                    if(!map_controller.routes[_controllerName])
+                        map_controller.routes[_controllerName] = [];
+    
+                        map_controller.routes[_controllerName].push(
+                            _callback.bind(Object.assign(routes[_controllerName], CurrentState))
+                        );
+                        _callback.bind(Object.assign(routes[_controllerName], CurrentState))();
+                }
+            },
             component:{
                 //FIXME: first parameter can take two prototype type, function and objec
                 //this comment for next level of controller function, explain top.
                 controller: function (_callback) {
                     let _controllerName = history.state.path;
-                    if(routes[_controllerName] !== undefined && !map_controller.components[_controllerName]){
-                        map_controller.components[_controllerName] = _callback.bind(Object.assign(routes[_controllerName], CurrentState));
-                        map_controller.components[_controllerName]();
-                    }else{
-                        throw new Error("Controller Name does not find/defind.");
-                    }
+
+                    //TODO: add way to find witch function for component and root
+                    if(!map_controller.components[_controllerName])
+                        map_controller.components[_controllerName] = [];
+    
+                        map_controller.components[_controllerName].push(
+                            _callback.bind(Object.assign(routes[_controllerName], CurrentState))
+                        );
+                        _callback.bind(Object.assign(routes[_controllerName], CurrentState))();
                 }
             },
             module: {
