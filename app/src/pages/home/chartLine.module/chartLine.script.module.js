@@ -1,22 +1,37 @@
 
 
-let chart = document.getElementsByTagName('chart-static');
+//let chart = document.getElementsByTagName('chart-static');
 
-console.log(chart)
 
-chart[0].controller(function(){
-    var _self = this
-    chart[0].innerHTML = "chart-static one";
-});
+//console.log(chart)3
+ 
+app.module.controller(function(){
 
-chart[1].controller(function(){
-    var _self = this;
-    chart[1].innerHTML = "chart-static one";
-});
+    let chart = document.getElementsByTagName('chart-static')
 
-chart[2].controller(function(){
-    var _self = this;
-    chart[2].innerHTML = "chart-static one";
+        chart[0].controller(function(){
+            var _self = this
+            console.log(_self)
+            _self.element.querySelector('.head').innerHTML = `Module: <b> ${_self.tagName} </b>`
+            _self.element.querySelector('.body').innerHTML = `Chart-static "one" Body`;
+        });
+
+        chart[1].controller(function(){
+            var _self = this;
+            _self.element.querySelector('.head').innerHTML = `Module: <b> ${_self.tagName} </b>`
+            _self.element.querySelector('.body').innerHTML = "Chart-static two Body";
+        });
+
+        chart[2].controller(function(){
+            var _self = this;
+            _self.element.querySelector('.head').innerHTML = `Module: <b> ${_self.tagName} </b>`
+            _self.element.querySelector('.body').innerHTML = "Chart-static three Body";
+        });
+
+
+
+
+
 });
 
 

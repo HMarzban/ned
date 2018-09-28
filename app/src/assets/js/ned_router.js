@@ -4,9 +4,19 @@
         (global.Router = factory());
 }(this, (function () {
 
-
+    //FIXME: now this map is just work for one controller 
+    //after a while work for multi controller loade with array,
+    //it's work like pubsub pattern.
+    let map_controller = {
+        module:{},
+        components:{}
+    }
     //privite Scope
-
+    let scriptsLoaded = {}
+    let scriptsLoade={
+        modules:{},
+        components:{}
+    }
     let routes = {};
     let components = {};
     let setting = {
@@ -64,13 +74,6 @@
     }; //@Function: $ajax(methid, url, callback)
 
 
-    function $removeTAG(_tag) {
-        // Removes an element from the document
-        let element = document.querySelector(_tag);
-        //be sure that tag/id/class exist in DOM
-        if(element != null)
-            element.remove(element);
-    }
 
     
     /**
@@ -123,14 +126,17 @@
 
         function add(_obj) {
             let currentSate = history.state.path;
-            modules[currentSate] = [];
-            modules[currentSate].push(_obj);
+            if(modules[currentSate] == undefined ){
+                modules[currentSate] =  [];
+                modules[currentSate].push(_obj);  
+            }  
         } //@Function: addRoute(_path, _obj)
 
 
         function _loadStatic(_tag, _el) {
             //console.log(_tag);
-            if (_el.html) {
+            let path = history.state.path;
+            if (_el.html ) {
 
                 //TODO: Examin conscience clearTime, and efected part
                // _clearAllTimer();
@@ -140,33 +146,41 @@
                     let tags = document.querySelectorAll(_el.tag);
                     let root = document.querySelector(setting.root)
 
-                    let obj = {
-                        //TODO: find way to resolve this.
-                        //reload,
-                        pubsub
-                    }
-    
-    
-                    
                     //mabe some time we use one mudel morethan onece
                     //loop just html, and inject style and js once
-                    for (let [index, tag] of tags.entries()) {
+                    tags.forEach(function(_tag, index){
 
-                        //attach object "this"
-                        tag["controller"] = function(_callback){ 
-                            _callback.bind(Object.assign(obj))(); 
+                        let obj = {
+                            //TODO: find way to resolve this.
+                            //reload,
+                            pubsub,
+                            tagName: _el.tag,
+                            controller: _el.controller
+                        }
+
+                         //attach object "this"
+                        obj["element"] = _tag;                
+                        _tag["controller"] = function(_callback){ 
+                            (function(){
+                                _callback.bind(Object.assign(obj))(); 
+                            })();
                         };
 
                         //inject html elements to module
-                        $insertHTML(tag, _data);
-                        tag.setAttribute(`${_el.tag}_${index+1}`, '');
-                    }//@loop: for each module user created
+                        $insertHTML(_tag, _data);
+                        _tag.setAttribute(`${_el.tag}_${index+1}`, '');
 
-                    if (_el.script) {
+                    });//@loop: for each module user created
+                   
+                   
+                    if (_el.script && !scriptsLoade.modules[path]) {
                         let script = document.createElement("script");
                         script.src = _DynamicURL(_el.script);
                         script.id = "script_"+_el.tag;
                         root.appendChild(script);
+                        scriptsLoade.modules[path] = true;
+                    }else{
+                        map_controller.module[path]();
                     }
 
                     if (_el.style)
@@ -182,6 +196,9 @@
                 throw new Error("HTML Does not defind.");
             }
         } //@Function: _loadStatic()
+
+
+  
 
         //TODO: find way to work this?!?!?!
         // we have  problem when injection done and that injection 
@@ -203,7 +220,7 @@
 
 
         function initial() {
-            loadModules();
+                loadModules();
         } //@Function: initial()
 
 
@@ -345,23 +362,29 @@
                     let path = craetPathAttr(_path);
                     let lastPath = craetPathAttr(history.state.lastPath);
 
+                    $(tag).html("")
                     tag.removeAttribute(lastPath);
                     $insertHTML(tag, _data);
                     tag.setAttribute(path, '');
+                    
 
-
-                    if (routes[_path].script) {
+                    if (routes[_path].script && !scriptsLoaded[routes[_path].script]) {
                         let script = document.createElement("script");
                         script.src = _DynamicURL(routes[_path].script);
                         tag.appendChild(script);
+                        scriptsLoaded[routes[_path].script] = true;
+                    }else{
+                        map_controller.components[_path](); 
                     }
 
                     if (routes[_path].style)
                         $insertHTML(tag, "<link rel='stylesheet' type='text/css'  href='" + _DynamicURL(routes[_path].style) + "' />", "beforeend", false)
-
+                        
+                    
 
                     if (routes[_path].controller) {
                         //FIXME: is it true?!
+                        //
                         //CurrentState.bind(Object.assign(new module())).
                         CurrentState["module"] = module();
                         // Object.assign(CurrentState["module"], {state:history.state} );
@@ -496,15 +519,18 @@
         } //@Function: initial()
 
 
+       
 
-
-        const controller = (_controllerName, _callback) => {
+/*        const controller = function (_controllerName, _callback) {
+            
             if (routes[_controllerName] != undefined)
                 _callback.bind(Object.assign(routes[_controllerName], CurrentState))();
             else
                 throw new Error("Controller Name does not find/defind.");
-        } //@Function: controller(_controllerName, _callback())
 
+        }*/ //@Function: controller(_controllerName, _callback())
+
+       
 
 
         return Object.freeze({
@@ -516,7 +542,32 @@
             components,
             setting,
             initial,
-            controller
+            //controller,
+            component:{
+                //FIXME: first parameter can take two prototype type, function and objec
+                //this comment for next level of controller function, explain top.
+                controller: function (_callback) {
+                    let _controllerName = history.state.path;
+                    if(routes[_controllerName] !== undefined && !map_controller.components[_controllerName]){
+                        map_controller.components[_controllerName] = _callback.bind(Object.assign(routes[_controllerName], CurrentState));
+                        map_controller.components[_controllerName]();
+                    }else{
+                        throw new Error("Controller Name does not find/defind.");
+                    }
+                }
+            },
+            module: {
+                //FIXME: first parameter can take two prototype type, function and objec
+                //this comment for next level of controller function, explain top.
+                controller : function (_callback){
+                let _moduleNane = history.state.path;
+                if (modules[_moduleNane] != undefined && !map_controller.module[_moduleNane]  ){
+                    map_controller.module[_moduleNane] = _callback.bind(Object.assign(modules[_moduleNane], CurrentState));
+                    map_controller.module[_moduleNane]()
+                }else{
+                    throw new Error("Controller Name does not find/defind.");
+                }
+            }}
         });
 
     } //@Function: Route()

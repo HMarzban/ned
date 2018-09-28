@@ -1,3 +1,26 @@
 app-head p{padding:10px;}
 app-head a{color:red}
 app-head h3{color:orangered}
+
+app-head .container{
+    width: 100%;
+    padding: 30px 20px 20px;
+    border-radius: 3px;
+    border:2px solid #ddd;margin: 10px 0;
+    overflow: auto;position: relative;
+}
+
+app-head .header{
+    position: absolute;top:-4px;left: -4px;font-size: 13px;
+    padding: 2px 6px;border-radius: 3px; background-color: #ddd;
+}
+
+app-head ul {list-style-type: none;margin: 0;width: 100%; padding: 0}
+
+app-head ul li{
+    float: left;margin: 0 12px 0 0;
+    text-transform: capitalize
+}
+app-head ul li:last-child{
+    float: right;
+}

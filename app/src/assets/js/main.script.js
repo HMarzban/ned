@@ -12,7 +12,7 @@ var globaleee = "HI Hossein"
                     html:"./pages/home/home.page.html",
                     script:"./pages/home/home.script.js",
                     style:"./pages/home/home.style.css",
-                    controller:function(){ /*console.log("/ Controller loaded")*/ console.log(this) }
+                    controller:function(){ /*console.log("/ Controller loaded")*/ /*console.log(this)*/ }
                 },
                 '/about':{
                     name:"About Us",
@@ -77,7 +77,7 @@ var globaleee = "HI Hossein"
 
 
 
-           app.controller('/',function(){
+           //app.controller('/',function(){
               // console.log(this)
                //this.reload();
-           });
+           //});
