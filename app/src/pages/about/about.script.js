@@ -1,3 +1,4 @@
-app.component.controller(function(){
-    console.log("About controller Loaded.")
+app.router.controller(function(){
+    //console.log("About controller Loaded.")
+    //console.log(this)
 });//@component.controller

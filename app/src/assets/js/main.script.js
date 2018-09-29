@@ -6,7 +6,7 @@ var globaleee = "HI Hossein"
                 defualtRoot:'/'
             });
 
-            app.addRoute({
+            app.router.add({
                 '/':{
                     name:"Dashboard Page",
                     html:"./pages/home/home.page.html",
@@ -40,7 +40,7 @@ var globaleee = "HI Hossein"
             });
 
 
-            app.addRoute({
+            app.router.add({
                 '/posts':{
                     name:"posts Page",
                     html:"./pages/posts/posts.page.html",
@@ -62,7 +62,7 @@ var globaleee = "HI Hossein"
             });
             
 
-            app.addComponent('app-head',{
+            app.component.add('app-head',{
                 name: "Main Header",
                 html:"./components/header/header.component.html",
                 script:"./components/header/header.component.js",
@@ -70,7 +70,7 @@ var globaleee = "HI Hossein"
                 controller:function(){ /*console.log("<app-head> component loaded")*/ }
             });
 
-            app.addComponent('app-footer',{
+            app.component.add('app-footer',{
                 name:"Main Footer",
                 html:"./components/footer/footer.component.html",
                 script:"./components/footer/footer.component.script.js",
@@ -78,7 +78,7 @@ var globaleee = "HI Hossein"
                 controller:function(){ /*console.log("<app-head> component loaded")*/ }
             })
 
-           app.initial();
+           app.init();
 
 
 

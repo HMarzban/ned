@@ -1,5 +1,8 @@
-app.route.controller(function(){
+
+
+app.router.controller(function(){
     var _self = this
+    console.log(this)
 
 
     this.module.add({
@@ -10,7 +13,7 @@ app.route.controller(function(){
     })
 
 
-    this.module.initial();
+    this.module.init();
 
     
     _self.pubsub.on("dashboard",function(_data){

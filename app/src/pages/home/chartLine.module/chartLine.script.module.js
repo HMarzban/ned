@@ -6,6 +6,7 @@
 //console.log(chart)3
  
 app.module.controller(function(){
+    console.log(this)
 
     let chart = document.getElementsByTagName('chart-static')
 

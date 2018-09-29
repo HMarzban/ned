@@ -19,8 +19,12 @@
         modules:{},
         components:{}
     }
+
     let routes = {};
     let components = {};
+    let modules = {}
+
+
     let setting = {
         customAttributeNavigate: "ned-href",
         root: "app-root",
@@ -120,118 +124,7 @@
 
 
 
-    let modules = {}
-
-
-    function module(_route) {
-
-
-        function add(_obj) {
-            let currentSate = history.state.path;
-            if(modules[currentSate] == undefined ){
-                modules[currentSate] =  [];
-                modules[currentSate].push(_obj);  
-            }  
-        } //@Function: addRoute(_path, _obj)
-
-
-        function _loadStatic(_tag, _el) {
-            //console.log(_tag);
-            let path = history.state.path;
-            if (_el.html ) {
-
-                //TODO: Examin conscience clearTime, and efected part
-               // _clearAllTimer();
-
-                $ajax("GET", _DynamicURL(_el.html), function (_data) {
-
-                    let tags = document.querySelectorAll(_el.tag);
-                    let root = document.querySelector(setting.root)
-
-                    //mabe some time we use one mudel morethan onece
-                    //loop just html, and inject style and js once
-                    tags.forEach(function(_tag, index){
-
-                        let obj = {
-                            //TODO: find way to resolve this.
-                            //reload,
-                            pubsub,
-                            tagName: _el.tag,
-                            controller: _el.controller
-                        }
-
-                         //attach object "this"
-                        obj["element"] = _tag;                
-                        _tag["controller"] = function(_callback){ 
-                            (function(){
-                                _callback.bind(Object.assign(obj))(); 
-                            })();
-                        };
-
-                        //inject html elements to module
-                        $insertHTML(_tag, _data);
-                        _tag.setAttribute(`${_el.tag}_${index+1}`, '');
-
-                    });//@loop: for each module user created
-                   
-                   
-                    if (_el.script && !scriptsLoade.modules[path]) {
-                        let script = document.createElement("script");
-                        script.src = _DynamicURL(_el.script);
-                        script.id = "script_"+_el.tag;
-                        root.appendChild(script);
-                        scriptsLoade.modules[path] = true;
-                    }else{
-                        map_controller.module[path]();
-                    }
-
-                    if (_el.style)
-                        $insertHTML(root, "<link id='style_"+_el.tag+"'  rel='stylesheet' type='text/css'  href='" + _DynamicURL(_el.style) + "' />", "beforeend", false)
-                
-                
-                    if (_el.controller) {
-                        _el.controller();
-                    }
-                });
-
-            } else {
-                throw new Error("HTML Does not defind.");
-            }
-        } //@Function: _loadStatic()
-
-
-        //TODO: find way to work this?!?!?!
-        // we have  problem when injection done and that injection 
-        // stick in DOM and every time i can not remove it or replace it.
-
-        //function reload(){ 
-        //    loadModules()
-        //}
-
-
-        function loadModules() {
-            var currentSate = history.state.path;
-            modules[currentSate].forEach(function (_el, index) {
-                //TODO: add parrall and qeuea load module, setting
-                // now just inject parral
-                _loadStatic(currentSate, _el)
-            });
-        }//@Function: loadModules()
-
-
-        function initial() {
-                loadModules();
-        } //@Function: initial()
-
-
-        return Object.seal({
-            add,
-            initial
-        })
-    };
-
-
-
+    
 
 
     function Router() {
@@ -281,17 +174,7 @@
             setting.customAttributeNavigate = _obj.customAttributeNavigate ? _obj.customAttributeNavigate : 'ned-href';
         } //@Function: config(_obj)
 
-        function addRoute(_path, _obj) {
-            if (isObject(_path)) {
-                let key = Object.keys(_path);
-                for (let i = 0; i < key.length; i++) {
-                    routes[key[i]] = _path[key[i]];
-                }
-            } else {
-                routes[_path] = _obj;
-            }
-        } //@Function: addRoute(_path, _obj)
-
+     
 
         //FIXME: dont forget add trycatch for async/await function
         async function navigateTo(_path, _pop) {
@@ -325,7 +208,7 @@
                     history.pushState(state, title, url);
 
                 //After change state load Static data
-                _loadpage(_path);
+                router_loadStatic(_path);
             } else {
                 let err = {
                     message: `[NED Guard]: You don't have permission to access this route`,
@@ -339,8 +222,44 @@
             return _path != '/' ? _path.replace('/', '').replace(/[\/]/g, '-') : routes[_path].name ? routes[_path].name.replace(/\s/g, '') : _path.replace('/', '').replace(/[\/]/g, '-');
         }
 
+        function _fnthis(_target){
+            var _path = history.state.path;
+            let _this = {};
+            if(_target == "component"){
+                _this = {
+                    info:routes[_path],
+                    state: history.state,
+                    module:{ add:module_add, init: module_initial},
+                    reload,
+                    pubsub,
+                }
+            }else if(_target == "module"){
+                _this = {
+                    state: history.state,
+                    module:{ add:module_add, init: module_initial},
+                    pubsub,
+                }
+            }
 
-        function _loadpage(_path) {
+            return _this
+
+        }
+
+
+
+        function router_add(_path, _obj) {
+            if (isObject(_path)) {
+                let key = Object.keys(_path);
+                for (let i = 0; i < key.length; i++) {
+                    routes[key[i]] = _path[key[i]];
+                }
+            } else {
+                routes[_path] = _obj;
+            }
+        } //@Function: addRoute(_path, _obj)
+
+
+        function router_loadStatic(_path) {
             //before load new data, Clear all Timer
             _clearAllTimer();
             if (routes[_path].html) {
@@ -374,32 +293,17 @@
                     
 
                     if (routes[_path].controller) {
-         
-                        CurrentState["module"] = module();
-                        routes[_path].controller.bind(Object.assign(CurrentState))();
+                        routes[_path].controller.bind(_fnthis("component"))();
                     }
 
                 }); //@AjaxCall
             } else {
                 throw new Error("HTML Does not defind.");
             }
-        } //@Function: _loadpage(_path);
+        } //@Function: router_loadStatic(_path);
 
 
-        //=======================
-
-        function reload() {
-            _loadpage(this.state.path)
-        } //@Function: reload current state
-
-        let CurrentState = {
-            reload,
-            state: history.state,
-            pubsub
-        }
-
-
-        function _initRouter() {
+        function router_initial() {
 
             if (setting.customAttributeNavigate) {
 
@@ -427,7 +331,39 @@
                 path = setting.defualtRoot;
 
             navigateTo(path);
-        } //@Function: initRouter()
+        } //@Function: router_initial()
+
+
+
+        const router_controller =  function(_callback){
+            let _controllerName = history.state.path;
+            let _this = _fnthis("component");
+
+            //TODO: add way to find witch function for component and root
+            if(!map_controller.routes[_controllerName])
+                map_controller.routes[_controllerName] = [];
+
+                map_controller.routes[_controllerName].push(
+                    _callback.bind(_this)
+                );
+                _callback.bind(_this)();
+        }//@Function: router_controller( callback )
+
+      
+        let CurrentState = {
+            reload,
+            state: history.state,
+            pubsub
+        }
+
+
+
+
+
+        function reload() {
+            _loadpage(this.state.path)
+        } //@Function: reload current state
+
 
         window.onpopstate = async function (event) {
             if (event.state) {
@@ -437,11 +373,137 @@
         }; //@Watch: onpopstate; back and forward browser history button 
 
 
-        /**      =========        */
-        /**      Component        */
-        /**      =========        */
 
-        function addComponent(_path, _obj) {
+
+
+
+        /** =========                   ========= */
+        /**               =========               */ 
+        /** =========                   ========= */
+        /** =========      Modules      ========= */
+        /** =========                   ========= */
+        /**               =========               */
+        /** =========                   ========= */
+
+
+
+
+        function module_add(_obj) {
+            let currentSate = history.state.path;
+            if(modules[currentSate] == undefined ){
+                modules[currentSate] =  [];
+                modules[currentSate].push(_obj);  
+            }  
+        } //@Function: module_add(_path, _obj)
+
+
+        function module_loadStatic(_tag, _el) {
+
+            let path = history.state.path;
+            if (_el.html ) {
+
+                //TODO: Examin conscience clearTime, and efected part
+               // _clearAllTimer();
+
+                $ajax("GET", _DynamicURL(_el.html), function (_data) {
+
+                    let tags = document.querySelectorAll(_el.tag);
+                    let root = document.querySelector(setting.root)
+
+                    //mabe some time we use one mudel morethan onece
+                    //loop just html, and inject style and js once
+                    tags.forEach(function(_tag, index){
+
+                        let _this = {
+                            pubsub,
+                        }
+                
+                        _this["element"] = _tag;       
+                        _tag["controller"] = function(_callback){ 
+                                _callback.bind(Object.assign(_this))();  
+                        };
+
+                        //inject html elements to module
+                        $insertHTML(_tag, _data);
+                        _tag.setAttribute(`${_el.tag}_${index+1}`, '');
+
+                    });//@loop: for each module user created
+                   
+                   
+                    if (_el.script && !scriptsLoade.modules[path]) {
+                        let script = document.createElement("script");
+                        script.src = _DynamicURL(_el.script);
+                        script.id = "script_"+_el.tag;
+                        root.appendChild(script);
+                        scriptsLoade.modules[path] = true;
+                    }else{
+                        map_controller.module[path]();
+                    }
+
+                    if (_el.style)
+                        $insertHTML(root, "<link id='style_"+_el.tag+"'  rel='stylesheet' type='text/css'  href='" + _DynamicURL(_el.style) + "' />", "beforeend", false)
+                
+                
+                    if (_el.controller) {
+                        _el.controller();
+                    }
+                });
+
+            } else {
+                throw new Error("HTML Does not defind.");
+            }
+        } //@Function: module_loadStatic(_tag, _el )
+
+
+
+        const module_controller =  function (_callback){
+            let _moduleNane = history.state.path;
+            let _this = _fnthis("module")
+            if (modules[_moduleNane] != undefined && !map_controller.module[_moduleNane]  ){
+                map_controller.module[_moduleNane] = _callback.bind(_this);
+                map_controller.module[_moduleNane]()
+            }else{
+                throw new Error("Controller Name does not find/defind.");
+            }
+        }//@Function: module_controller( _callback )
+
+
+        //TODO: find way to work this?!?!?!
+        // we have  problem when injection done and that injection 
+        // stick in DOM and every time i can not remove it or replace it.
+
+        //function reload(){ 
+        //    loadModules()
+        //}
+
+        function module_load() {
+            var currentSate = history.state.path;
+            modules[currentSate].forEach(function (_el, index) {
+                //TODO: add parrall and qeuea load module, setting
+                // now just inject parral
+                module_loadStatic(currentSate, _el)
+            });
+        }//@Function: module_load()
+
+
+        function module_initial() {
+                module_load();
+        } //@Function: module_initial()
+
+
+
+
+
+
+        /** =========                   ========= */
+        /**               =========               */ 
+        /** =========                   ========= */
+        /** =========     Component     ========= */
+        /** =========                   ========= */
+        /**               =========               */
+        /** =========                   ========= */
+
+        function component_add(_path, _obj) {
             if (isObject(_path)) {
                 let key = Object.keys(_path);
                 for (let i = 0; i < key.length; i++) {
@@ -451,25 +513,26 @@
                 components[_path] = _obj
             }
             //initComponent();
-        } //@Function: addRoute(_path, _obj)
+        } //@Function: component_add(_path, _obj)
 
-        function initComponent() {
+        function component_initial() {
             // if(document.readyState === 'complete'){  
             let key = Object.keys(components);
             for (let i = 0; i < key.length; i++) {
-                _loadComponent(key[i]);
+                component_load(key[i]);
             }
             //};
-        } //@Function: initComponent()
+        } //@Function: component_initial()
 
 
-        function _loadComponent(_path) {
+        function component_load(_path) {
 
             if (components[_path].html) {
 
                 $ajax("GET", _DynamicURL(components[_path].html), function (_data) {
 
                     let tag = document.querySelector(_path)
+
                     $insertHTML(tag, _data);
 
                     if (components[_path].style)
@@ -489,70 +552,71 @@
             } else {
                 throw new Error("HTML Does not defind.");
             }
-        } //@Function: _loadComponent()
+        } //@Function: component_load(_path)
 
+        const component_controller = function (_callback) {
+            let _controllerName = history.state.path;
+            let _this = _fnthis("controller")
+
+            //TODO: add way to find witch function for component and root
+            if(!map_controller.components[_controllerName])
+                map_controller.components[_controllerName] = [];
+
+                map_controller.components[_controllerName].push(
+                    _callback.bind(_this)
+                );
+                _callback.bind(_this)();
+        }//@Function: component_controller( callback )
+
+
+
+
+        //init all component, route
         function initial() {
             if (routes[setting.defualtRoot])
-                _initRouter();
-            initComponent();
+                router_initial();
+
+            component_initial();
         } //@Function: initial()
 
 
+
+   
+     
        
-    var fl = 0
-
-        return Object.freeze({
-            navigateTo,
-            config,
-            addRoute,
-            addComponent,
-            routes,
-            components,
-            setting,
-            initial,
-            route:{
-                controller: function(_callback){
-                    let _controllerName = history.state.path;
-
-                    //TODO: add way to find witch function for component and root
-                    if(!map_controller.routes[_controllerName])
-                        map_controller.routes[_controllerName] = [];
-    
-                        map_controller.routes[_controllerName].push(
-                            _callback.bind(Object.assign(routes[_controllerName], CurrentState))
-                        );
-                        _callback.bind(Object.assign(routes[_controllerName], CurrentState))();
-                }
+        const nedReturn = {
+            router:{
+                add:router_add,
+                controller:router_controller
             },
             component:{
-                //FIXME: first parameter can take two prototype type, function and objec
-                //this comment for next level of controller function, explain top.
-                controller: function (_callback) {
-                    let _controllerName = history.state.path;
+                add: component_add,
+                controller: component_controller
 
-                    //TODO: add way to find witch function for component and root
-                    if(!map_controller.components[_controllerName])
-                        map_controller.components[_controllerName] = [];
-    
-                        map_controller.components[_controllerName].push(
-                            _callback.bind(Object.assign(routes[_controllerName], CurrentState))
-                        );
-                        _callback.bind(Object.assign(routes[_controllerName], CurrentState))();
-                }
             },
-            module: {
-                //FIXME: first parameter can take two prototype type, function and objec
-                //this comment for next level of controller function, explain top.
-                controller : function (_callback){
-                let _moduleNane = history.state.path;
-                if (modules[_moduleNane] != undefined && !map_controller.module[_moduleNane]  ){
-                    map_controller.module[_moduleNane] = _callback.bind(Object.assign(modules[_moduleNane], CurrentState));
-                    map_controller.module[_moduleNane]()
-                }else{
-                    throw new Error("Controller Name does not find/defind.");
-                }
-            }}
-        });
+            module:{
+                add:module_add,
+                controller:module_controller
+            },
+            config,
+            init:initial,
+        }
+
+
+        return Object.freeze(
+            nedReturn
+            /*{
+            //navigateTo,
+            config,
+            //addRoute,
+            //addComponent,
+            //routes,
+            //components,
+            //setting,
+            init:initial,
+        }*/
+        
+        );
 
     } //@Function: Route()
 
