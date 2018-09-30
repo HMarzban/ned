@@ -1,1 +1,6 @@
-app-footer {margin-top: 10px;display: block;}
+app-footer {
+    margin: 10px 0;
+    display: block;
+    float: left;
+    width: 100%;
+}

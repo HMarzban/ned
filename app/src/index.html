@@ -21,9 +21,7 @@
             return _path;
         };//@Function: _DynamicURL(_path)
 
-
-
-        function RouteVendorScript(_targer,_list){
+        function RouteVendorScript(_targer, _list){
             _list.forEach(function(val,index){
                 let script = document.createElement("script");
                 script.src = _DynamicURL(val);
@@ -33,21 +31,34 @@
                 else 
                     document.body.appendChild(script);
             });
-        };//@Function: _DynamicURL(_path)
+        };//@Function: RouteVendorScript(_targer, _list)
+
+        function RouteVendorStyle(_targer, _list){
+            _list.forEach(function(val,index){
+                let style = document.createElement("link");
+                style.href = _DynamicURL(val);
+                style.rel = "stylesheet";
+                if(_targer == "head")
+                    document.head.appendChild(style);
+                else 
+                    document.body.appendChild(style);
+            });
+        };//@Function: RouteVendorStyle(_targer, _list)
+
 
         //befor every things start load Ned-route
         document.addEventListener("readystatechange",function(){
             //this code invoke before "DOMContentLoaded"
             if(document.readyState == "interactive"){
                 RouteVendorScript("head",["./assets/js/ned_router.js"]);
+                RouteVendorStyle("head",["./assets/style/main.style.css"]);
             }
         });
 
         document.addEventListener("DOMContentLoaded", function(event) {
             RouteVendorScript("body",[ 
-            "./assets/js/jquery-3.3.1.min.js",
+                "./assets/js/jquery-3.3.1.min.js",
                 "./assets/js/main.script.js",
-                
             ]);
         });
         
@@ -60,36 +71,8 @@
 
         <app-head></app-head>
         <app-root  id="one" class="root"></app-root>
+        <app-sidebar></app-sidebar>
         <app-footer></app-footer>
     
-    <style>
-        *{box-sizing: border-box;}
-        body{
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .container{
-            width: 100%;
-            padding: 30px 20px 20px;
-            border-radius: 3px;
-            border:2px solid #ddd;
-            overflow: auto;position: relative;
-        }
-
-        .header{
-            position: absolute;top:-4px;left: -4px;font-size: 13px;
-            padding: 2px 6px;border-radius: 3px; background-color: #ddd;
-        }
-       app-root > .container >.body{
-        width: 100%;
-        text-align: justify;
-        clear: both;
-        padding: 20px 40px;
-        background: #eee;
-        border-radius: 3px;
-        box-shadow: 1px 1px 4px rgba(0,0,0,.2);
-        margin: 10px auto;
-        float: left;
-        }
-    </style>
 </body>
 </html>

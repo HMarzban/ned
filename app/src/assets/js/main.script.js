@@ -1,5 +1,6 @@
-var globaleee = "HI Hossein"
-            var app = Router();
+
+
+            var app = Ned();
 
             app.config({
                 customAttributeNavigate:"ndhref",
@@ -76,13 +77,17 @@ var globaleee = "HI Hossein"
                 script:"./components/footer/footer.component.script.js",
                 style:"./components/footer/footer.component.style.css",
                 controller:function(){ /*console.log("<app-head> component loaded")*/ }
-            })
+            });
+
+
+            app.component.add('app-sidebar',{
+                name:"Main sidebar",
+                html:"./components/sidebar/sidebar.component.html",
+                script:"./components/sidebar/sidebar.component.script.js",
+                style:"./components/sidebar/sidebar.component.style.css",
+                controller:function(){ /*console.log("<app-head> component loaded")*/ }
+            });
+
+
 
            app.init();
-
-
-
-           //app.controller('/',function(){
-              // console.log(this)
-               //this.reload();
-           //});

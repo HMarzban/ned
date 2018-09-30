@@ -1,0 +1,16 @@
+
+
+app-survey{
+    position: relative;
+}
+app-survey .head{
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    padding: 2px 13px;
+    border-radius: 3px;
+    font-size: 12px;
+    box-shadow: 1px 1px 3px rgba(0,0,0,.3);
+    z-index: 9;
+    background: #fff;
+}

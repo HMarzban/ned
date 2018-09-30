@@ -24,3 +24,22 @@ app-head ul li{
 app-head ul li:last-child{
     float: right;
 }
+
+app-head  .rateApp {
+    font-size: 13px;
+    display: inline-block;
+}
+
+app-head  .rateApp span{
+    padding: 4px 8px;
+    border-radius: 3px;
+    color:#fff;margin: 0 6px;
+}
+
+app-head  .rateApp span.like{
+    background-color: #8bc34a;
+}
+
+app-head  .rateApp span.dislike{
+    background-color: #fa2718
+}

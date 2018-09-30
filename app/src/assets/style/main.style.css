@@ -1,0 +1,55 @@
+app-sidebar,app-root{
+    min-height: 560px
+}
+app-sidebar{float: right;width: 29%;display: inline-block;}
+app-root{float: left;margin-right: 1%;width: 69%}
+*{box-sizing: border-box;}
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.container{
+    width: 100%;
+    padding: 30px 20px 20px;
+    border-radius: 3px;
+    border:2px solid #ddd;
+    overflow: auto;position: relative;
+}
+
+.header{
+    position: absolute;top:-4px;left: -4px;font-size: 13px;
+    padding: 2px 6px;border-radius: 3px; background-color: #ddd;
+}
+app-root > .container >.body{
+width: 100%;
+text-align: justify;
+clear: both;
+padding: 20px 40px;
+background: #eee;
+border-radius: 3px;
+box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+margin: 10px auto;
+float: left;
+}
+
+button.btn{
+    background: #ddd;padding: 4px 12px; border-radius: 3px;margin:2px;
+    border:none;cursor: pointer;transition: all .1s linear;
+    box-shadow: 1px 1px 3px rgba(0,0,0,.1);outline: none
+}
+
+button.btn:hover{
+    box-shadow: 1px 1px 7px rgba(0,0,0,.3)
+}
+button.btn:active{
+    box-shadow:inset 1px 1px 7px rgba(0,0,0,.3)
+}
+
+button.btn.success{
+    background: #8bc34a;
+    color:#fff
+}
+
+button.btn.error{
+    background: #fa430a;
+    color:#fff
+}

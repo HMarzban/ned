@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
         typeof define === 'function' && define.amd ? define(factory) :
-        (global.Router = factory());
+        (global.Ned = factory());
 }(this, (function () {
 
     //FIXME: now this map is just work for one controller 
@@ -88,20 +88,11 @@
      */
 
 
-    const pubsub = {
+    let pubsub = {
         events: {},
         on: function (eventName, fn) {
-
             this.events[eventName] = this.events[eventName] || [];
-            //fn.bind({off:this.off, emit:this.emit});
-            //console.log(fn)
-            //fn["emit"] = this.emit 
             this.events[eventName].push(fn);
-
-            // return Object.freeze({
-            //     off: this.off,
-            //     emit: this.emit
-            // });
         },
         off: function (eventName, fn) {
             if (this.events[eventName]) {
@@ -124,10 +115,7 @@
 
 
 
-    
-
-
-    function Router() {
+    function Ned() {
 
         let loadedPathName;
         let pathss = location.pathname.split('/').length;
@@ -174,7 +162,6 @@
             setting.customAttributeNavigate = _obj.customAttributeNavigate ? _obj.customAttributeNavigate : 'ned-href';
         } //@Function: config(_obj)
 
-     
 
         //FIXME: dont forget add trycatch for async/await function
         async function navigateTo(_path, _pop) {
@@ -220,7 +207,7 @@
 
         function craetPathAttr(_path) {
             return _path != '/' ? _path.replace('/', '').replace(/[\/]/g, '-') : routes[_path].name ? routes[_path].name.replace(/\s/g, '') : _path.replace('/', '').replace(/[\/]/g, '-');
-        }
+        }//@Function: craetPathAttr(_path)
 
         function _fnthis(_target){
             var _path = history.state.path;
@@ -240,11 +227,8 @@
                     pubsub,
                 }
             }
-
-            return _this
-
-        }
-
+            return _this;
+        }//@Function: _fnthis(_target)
 
 
         function router_add(_path, _obj) {
@@ -334,7 +318,6 @@
         } //@Function: router_initial()
 
 
-
         const router_controller =  function(_callback){
             let _controllerName = history.state.path;
             let _this = _fnthis("component");
@@ -350,18 +333,8 @@
         }//@Function: router_controller( callback )
 
       
-        let CurrentState = {
-            reload,
-            state: history.state,
-            pubsub
-        }
-
-
-
-
-
         function reload() {
-            _loadpage(this.state.path)
+            router_loadStatic(this.state.path)
         } //@Function: reload current state
 
 
@@ -374,9 +347,6 @@
 
 
 
-
-
-
         /** =========                   ========= */
         /**               =========               */ 
         /** =========                   ========= */
@@ -384,9 +354,6 @@
         /** =========                   ========= */
         /**               =========               */
         /** =========                   ========= */
-
-
-
 
         function module_add(_obj) {
             let currentSate = history.state.path;
@@ -455,7 +422,6 @@
         } //@Function: module_loadStatic(_tag, _el )
 
 
-
         const module_controller =  function (_callback){
             let _moduleNane = history.state.path;
             let _this = _fnthis("module")
@@ -494,7 +460,6 @@
 
 
 
-
         /** =========                   ========= */
         /**               =========               */ 
         /** =========                   ========= */
@@ -502,6 +467,7 @@
         /** =========                   ========= */
         /**               =========               */
         /** =========                   ========= */
+    
 
         function component_add(_path, _obj) {
             if (isObject(_path)) {
@@ -556,7 +522,7 @@
 
         const component_controller = function (_callback) {
             let _controllerName = history.state.path;
-            let _this = _fnthis("controller")
+            let _this = _fnthis("component")
 
             //TODO: add way to find witch function for component and root
             if(!map_controller.components[_controllerName])
@@ -569,8 +535,6 @@
         }//@Function: component_controller( callback )
 
 
-
-
         //init all component, route
         function initial() {
             if (routes[setting.defualtRoot])
@@ -578,10 +542,6 @@
 
             component_initial();
         } //@Function: initial()
-
-
-
-   
      
        
         const nedReturn = {
@@ -600,25 +560,13 @@
             },
             config,
             init:initial,
+            pubsub
         }
 
 
-        return Object.freeze(
-            nedReturn
-            /*{
-            //navigateTo,
-            config,
-            //addRoute,
-            //addComponent,
-            //routes,
-            //components,
-            //setting,
-            init:initial,
-        }*/
-        
-        );
+        return Object.freeze( nedReturn );
 
     } //@Function: Route()
 
-    return Router;
+    return Ned;
 })));
