@@ -1,21 +1,33 @@
-[dashboardpage]{
-    color:black;
+[dashboardpage] {
+    color: black;
 }
 
-[dashboardpage] chart-static{
-    width: 200px;height: 100px;border:2px solid orangered;float: left;
-    border-radius: 3px;display: inline-block;margin:6px;padding:20px;
+[dashboardpage] chart-static {
+    width: 200px;
+    height: 100px;
+    border: 2px solid orangered;
+    float: left;
+    border-radius: 3px;
+    display: inline-block;
+    margin: 6px;
+    padding: 20px;
 }
 
-[dashboardpage] .container{
+[dashboardpage] .container {
     width: 100%;
     padding: 30px 20px 20px;
     border-radius: 3px;
-    border:2px solid #ddd;
-    overflow: auto;position: relative;
+    border: 2px solid #ddd;
+    overflow: auto;
+    position: relative;
 }
 
-[dashboardpage] .header{
-    position: absolute;top:-4px;left: -4px;font-size: 13px;
-    padding: 2px 6px;border-radius: 3px; background-color: #ddd;
+[dashboardpage] .header {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    font-size: 13px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background-color: #ddd;
 }

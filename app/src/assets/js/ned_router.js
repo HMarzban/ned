@@ -155,6 +155,9 @@
             });
         } //@Object.defineProperty : assign
 
+        if (typeof NodeList !== "undefined" && NodeList.prototype && !NodeList.prototype.forEach) {
+            NodeList.prototype.forEach = Array.prototype.forEach;
+        }// NodeList
 
         function config(_obj) {
             setting.root = _obj.root ? _obj.root : 'app-root';

@@ -1,7 +1,15 @@
-[products] {color:blue}
+[products] {
+    color: blue
+}
 
 
-[products]  app-survey{
-    width: 360px;border:2px solid orangered;float: left;   
-    border-radius: 3px;display: inline-block;margin:6px;padding:10px; margin-bottom: 0;
+[products] app-survey {
+    width: 360px;
+    border: 2px solid orangered;
+    float: left;
+    border-radius: 3px;
+    display: inline-block;
+    margin: 6px;
+    padding: 10px;
+    margin-bottom: 0;
 }

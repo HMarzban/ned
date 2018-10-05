@@ -1,27 +1,34 @@
 {
   "name": "ned-cli",
-  "version": "0.4.0",
+  "version": "0.6.0",
+  "description": "Ned Main Project",
+  "main": "./app.js",
   "scripts": {
     "start": "nodemon ./app.js"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "autoprefixer": "^9.1.5",
-    "chalk": "^2.4.1",
-    "commander": "^2.18.0",
-    "del": "^3.0.0",
+  "keywords": [
+    "ned",
+    "cli",
+    "router",
+    "spa",
+    "single-page",
+    "component",
+    "module"
+  ],
+  "homepage": "https://github.com/HosseinMarzban/ned",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HosseinMarzban/ned"
+  },
+  "license": "Mozilla",
+  "author": "Hossein Marzban",
+  "dependencies": {
     "express": "^4.16.3",
-    "gulp": "^4.0.0",
-    "gulp-autoprefixer": "^6.0.0",
-    "gulp-clean-css": "^3.10.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-nodemon": "^2.2.1",
-    "gulp-sass": "^4.0.1",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.1",
-    "inquirer": "^6.2.0",
     "ip": "^1.1.5",
-    "node-sass": "^4.9.3",
+    "chalk": "^2.4.1"
+  },
+  "devDependencies": {
+    "commander": "^2.18.0",
     "nodemon": "^1.18.4"
   }
 }

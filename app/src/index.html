@@ -1,78 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ned route</title>
-
-    <script>
-
-        function _DynamicURL(_path){
-            if(_path.indexOf('./')==0)
-                _path =_path.substring(2);//remove "./"
-            
-            let path = location.pathname.split('/').length;
-            if( path > 2){
-                for(let i = 0 ; i < path -2 ; i++ )
-                    _path= '../'+_path;  
-            }
-            return _path;
-        };//@Function: _DynamicURL(_path)
-
-        function RouteVendorScript(_targer, _list){
-            _list.forEach(function(val,index){
-                let script = document.createElement("script");
-                script.src = _DynamicURL(val);
-                script.async = false;
-                if(_targer == "head")
-                    document.head.appendChild(script);
-                else 
-                    document.body.appendChild(script);
-            });
-        };//@Function: RouteVendorScript(_targer, _list)
-
-        function RouteVendorStyle(_targer, _list){
-            _list.forEach(function(val,index){
-                let style = document.createElement("link");
-                style.href = _DynamicURL(val);
-                style.rel = "stylesheet";
-                if(_targer == "head")
-                    document.head.appendChild(style);
-                else 
-                    document.body.appendChild(style);
-            });
-        };//@Function: RouteVendorStyle(_targer, _list)
-
-
-        //befor every things start load Ned-route
-        document.addEventListener("readystatechange",function(){
-            //this code invoke before "DOMContentLoaded"
-            if(document.readyState == "interactive"){
-                RouteVendorScript("head",["./assets/js/ned_router.js"]);
-                RouteVendorStyle("head",["./assets/style/main.style.css"]);
-            }
-        });
-
-        document.addEventListener("DOMContentLoaded", function(event) {
-            RouteVendorScript("body",[ 
-                "./assets/js/jquery-3.3.1.min.js",
-                "./assets/js/main.script.js",
-            ]);
-        });
-        
-    </script>
-
-   
-
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 </head>
-<body>
 
-        <app-head></app-head>
-        <app-root  id="one" class="root"></app-root>
-        <app-sidebar></app-sidebar>
-        <app-footer></app-footer>
-    
+<body>
+    <app-head></app-head>
+    <app-root id="one" class="root"></app-root>
+    <app-sidebar></app-sidebar>
+    <app-footer></app-footer>
+
+    <script src="./ned.config.js"></script>
+    <script src="./assets/js/ReadyStage.js"></script>
 </body>
+
 </html>
