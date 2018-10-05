@@ -1,4 +1,4 @@
 {
-    "ignore": ["app/src/**/*.html","app/src/**/*.js"],
+    "ignore": ["app/src/**/*.html","app/src/**/*.js","app/src/**/*.css"],
     "ext": "js,json"
 }

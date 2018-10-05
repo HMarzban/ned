@@ -206,6 +206,8 @@
         } //@Function: navigateTo(_path)
 
         function craetPathAttr(_path) {
+            if(!routes[_path].name)
+                throw new Error(`[Ned Warning]: You have to chose name for your "${_path}" rout`);
             return _path != '/' ? _path.replace('/', '').replace(/[\/]/g, '-') : routes[_path].name ? routes[_path].name.replace(/\s/g, '') : _path.replace('/', '').replace(/[\/]/g, '-');
         }//@Function: craetPathAttr(_path)
 

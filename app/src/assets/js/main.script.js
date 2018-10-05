@@ -79,6 +79,8 @@
                 controller:function(){ /*console.log("<app-head> component loaded")*/ }
             });
 
+           
+            
 
             app.component.add('app-sidebar',{
                 name:"Main sidebar",

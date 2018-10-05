@@ -16,6 +16,4 @@ app.module.controller(function(){
     });
 
 
-
-
-})
+});
