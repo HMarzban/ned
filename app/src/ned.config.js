@@ -13,7 +13,8 @@ const NedConfig = {
   static: {
     script: {
       head: [
-        './assets/js/ned_router.js',
+        //"./assets/js/ned.js",
+        "./assets/js/ned_bundle.js"
       ],
       body: [
         './assets/js/jquery-3.3.1.min.js',

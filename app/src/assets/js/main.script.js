@@ -1,4 +1,4 @@
-var app = Ned();
+var app = new Ned();
 
 app.config({
     customAttributeNavigate: "ndhref",
