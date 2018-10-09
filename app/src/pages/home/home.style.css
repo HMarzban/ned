@@ -17,7 +17,7 @@
     width: 100%;
     padding: 30px 20px 20px;
     border-radius: 3px;
-    border: 2px solid #ddd;
+    /*border: 2px solid #ddd;*/
     overflow: auto;
     position: relative;
 }

@@ -1,45 +1,72 @@
-app-head p{padding:10px;}
-app-head a{color:red}
-app-head h3{color:orangered}
+app-head p {
+    padding: 10px;
+}
 
-app-head .container{
+app-head a {
+    color: red
+}
+
+app-head h3 {
+    color: orangered
+}
+
+app-head{
+    margin: 10px 0;
+}
+app-head .container {
     width: 100%;
-    padding: 30px 20px 20px;
+    padding: 10px 20px 10px;
     border-radius: 3px;
-    border:2px solid #ddd;margin: 10px 0;
-    overflow: auto;position: relative;
+   /* border: 2px solid #ddd;*/
+  
+    overflow: auto;
+    position: relative;
 }
 
-app-head .header{
-    position: absolute;top:-4px;left: -4px;font-size: 13px;
-    padding: 2px 6px;border-radius: 3px; background-color: #ddd;
+app-head .header {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    font-size: 13px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background-color: #ddd;
 }
 
-app-head ul {list-style-type: none;margin: 0;width: 100%; padding: 0}
+app-head ul {
+    list-style-type: none;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    padding: 0;line-height: 70px;
+}
 
-app-head ul li{
-    float: left;margin: 0 12px 0 0;
+app-head ul li {
+    float: left;
+    margin: 0 12px 0 0;
     text-transform: capitalize
 }
-app-head ul li:last-child{
+
+app-head ul li:last-child {
     float: right;
 }
 
-app-head  .rateApp {
-    font-size: 13px;
+app-head .rateApp {
+    font-size: 13px;line-height: 20px;
     display: inline-block;
 }
 
-app-head  .rateApp span{
+app-head .rateApp span {
     padding: 4px 8px;
     border-radius: 3px;
-    color:#fff;margin: 0 6px;
+    color: #fff;
+    margin: 0 6px;
 }
 
-app-head  .rateApp span.like{
+app-head .rateApp span.like {
     background-color: #8bc34a;
 }
 
-app-head  .rateApp span.dislike{
+app-head .rateApp span.dislike {
     background-color: #fa2718
 }

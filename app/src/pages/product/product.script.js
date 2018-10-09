@@ -1,6 +1,6 @@
 app.router.controller(function () {
     console.log("Product controller Loaded.")
-   // console.log(this)
+    // console.log(this)
 
     //production.init()
     let _self = this;
@@ -12,5 +12,4 @@ app.router.controller(function () {
     })
     this.module.init();
 
-
-}); //@component.controller
+}); //@router.controller

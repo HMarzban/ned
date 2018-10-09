@@ -1,4 +1,4 @@
-var app = Ned();
+var app = new Ned();
 
 app.config({
     customAttributeNavigate: "ndhref",
@@ -20,7 +20,9 @@ app.router.add({
         style: "./pages/about/about.style.css",
         guard: function () {
             return new Promise(function (resolve, reject) {
-                resolve(false);
+                setTimeout(function(){
+                    resolve(false);
+                }, 1000);
             });
         },
         controller: function (err) {

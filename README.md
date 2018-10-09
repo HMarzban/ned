@@ -1,5 +1,5 @@
 
-## Ned-Router
+## Ned Library
 Super Light Router and Component Library with VanilaJS ( JavaScript Native ).
 ~~Base on `jquery` Library ( plane to change this dependency )~~.
 
@@ -251,7 +251,7 @@ coming soon
 coming soon
 
 
-## How Ned-Rout work?
+## How Ned Library work?
 coming soon
 
 
