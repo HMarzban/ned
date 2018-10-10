@@ -1,4 +1,4 @@
-const NedConfig = {
+var NedConfig = {
   projectName: 'Ned Project Name',
   version: '1.0.0',
   author: 'Hossein Marzban',
