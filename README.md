@@ -19,6 +19,7 @@ Ned come with Cli so you can run `npm i -g ned-lib-cli` and use command line to 
 
 
 ### 3. Project File tree
+This project tree belongs to ned-seed:
 
 ```bash|-- undefined
     |-- .gitignore
@@ -62,7 +63,7 @@ Ned come with Cli so you can run `npm i -g ned-lib-cli` and use command line to 
 ### Project Configuration
 
 In `./app/src/` we have a file with the name of `ned.config.js`. with this file `cli` and project dependency injection logics set and handle.
-we have a proprty call `static`, all static file you wana be load in first and in global you have to put in there,`head` and `body` its location of your dependency injection loaded, becarful for your proiryy of injection.
+We have a property called `static`, all static files you want to be loaded in first and in global you have to put in there,`head` and `body` its location of your dependency injection loaded, be careful about your priority of injection.
 
 ```javascript
     static: {
@@ -79,7 +80,7 @@ we have a proprty call `static`, all static file you wana be load in first and i
 
 ### 5. Add Router
 
-if you wanna add new route you can simply run `ned add` command and chose `router` after then cli nedd name of your router witch must be uniq otherwise gives you warning. after all if router creater successfully cli givs you help of code you need in your script:
+If you want to add a new route you can simply run `ned add` command and chose `router`, then cli ask for the name of your router which must be unique otherwise gives you a warning. After all, if router created successfully cli gives you help with the code you need in your script:
 
 ```bash
 [Ned Cli]: Don. Router "profile" added successfully."
@@ -92,14 +93,16 @@ app.router.add('/profile',{
 	html:  "./pages/profile/profile.route.page.html",
 	style: "./pages/profile/profile.route.style.css",
 	script:"./pages/profile/profile.route.script.js",
-	controller: function(){ /*console.log("/profile router loaded")*/ }
+	controller: function(){ 
+		/*console.log("/profile router loaded")*/ 
+	}
 });
 
 //Put this tag in your static/html:(use just once in application)
 <app-root></app-root>
 ```
 
-each router have two controller witch first one is in main config set the other one is in script file witch you can use it like below:
+Each router has two controller witch firsts one is in the main inline config and the other one is in the script file which you can use it like below:
 
 ```javascript
 app.router.controller(function(){ 
@@ -109,9 +112,10 @@ app.router.controller(function(){
 }); // @router.controller()
 ```
 
-Note: all script when loaded in Dome object remain it even we remove script tag so, ned after first time loaded script and for second one just invoke the controller and rerun script again. so all script must be in the controller till ned run it after call route.
+Note: all scripts when loaded in Dom object remain, even we remove the script tag so, Ned, after the first-time script loaded to handle it inside of the controller and for the second one just invoke the controller and rerun the script again. So all scripts must be in the controller till Ned runs it after call route.
 
-it the controller and in call-site you have some feature throu `this`, if you console out `this` it gives you these info/data:
+in the controller and in call-site, you have some feature through `this`, if you console out `this` it gives you these info/data:
+
 ```javascript
 [Object]:{
 	info: {
@@ -124,17 +128,23 @@ it the controller and in call-site you have some feature throu `this`, if you co
 	module: {add: ƒ, init: ƒ},
 	pubsub: {events: {…}, on: ƒ, off: ƒ, emit: ƒ},
 	reload: ƒ (),
-	state: {lastPath: "/", path: "/about", name: "About Page", location: "/about", domain: "http://localhost:600"},
+	state: {
+		lastPath: "/",
+		path: "/about",
+		name: "About Page",
+		location: "/about",
+		domain: "http://localhost:600"
+	},
 	__proto__: Object
 }
 ```
-you can get static info from `info` prop even you can invoke your inline router controller
-through each router and component you can creat module <a href=""> see add module </a>,
-by `pubsub` you can have publish/subscripte stratig to access your data intire you project, 
-and `reload` prop give you ability to reaload and rerender your current router for your usage proposes.
+You can get static info from `info` prop even you can invoke your inline router controller,
+through each router and component you can create a module ,
+by `pubsub` you can have published/subscribe strategy to access your data entire your project, 
+and `reload` prop gives  you the ability to reload and re-render your current router for your usage proposes.
 
 ### 6. Add Component
-if you wanna add new component you can simply run `ned add` command and chose `component` after then cli need name of your router witch must be uniq otherwise gives you warning. after all if component creater successfully cli gives you help of code you need in your script:
+If you want to add a new component you can simply run `ned add` command and chose `component`, then cli ask for the name of your component which must be unique otherwise gives you a warning. After all, if component created successfully cli gives you help with the code you need in your script:
 ```bash
 [Ned Cli]: Don. Component "footer" added successfully."
 [Ned Cli][Help]:You can now copy and paste component config below on your application.
@@ -144,51 +154,47 @@ app.component.add('component-footer',{
 	html:  "./components/footer/footer.component.page.html",
 	style: "./components/footer/footer.component.style.css",
 	script:"./components/footer/footer.component.script.js",
-	controller: function(){ /*console.log("<component-footer></component-footer> component loaded")*/ }
+	controller: function(){ 
+		/*console.log("<component-footer></component-footer> component loaded")*/
+	}
 });
 
 //Put this tag in your static/html:
 <component-footer></component-footer>
 ```
-each component have two controller witch first one is in line config set the other one is in script file witch you can use it like below:
+like router, each component has two controller witch firsts one is in the main inline config and the other one is in the script file which you can use it like below:
 
 ```javascript
 app.component.controller(function(){ 
-
 	var _self = this;
-
 }); // @router.controller()
 ```
+Note: all scripts when loaded in Dom object remain, even we remove the script tag so, Ned, after the first-time script loaded to handle it inside of the controller and for the second one just invoke the controller and rerun the script again. So all scripts must be in the controller till Ned runs it after call route.
 
+in the controller and in call-site, you have some feature through `this`, if you console out `this` it gives you these info/data:
 
-Note: all script when loaded in Dome object remain it even we remove script tag so, ned after first time loaded script and for second one just invoke the controller and rerun script again. so all script must be in the controller till ned run it after call route.
-
-it the controller and in call-site you have some feature throu `this`, if you console out `this` it gives you these info/data:
 ```javascript
 [Object]:{
-	info: {
-		html:  "./components/footer/footer.component.page.html",
-		style: "./components/footer/footer.component.style.css",
-		script:"./components/footer/footer.component.script.js",
-		controller: ƒ
-	},
 	module: {add: ƒ, init: ƒ},
 	pubsub: {events: {…}, on: ƒ, off: ƒ, emit: ƒ},
-	state: {lastPath: "/", path: "/about", name: "About Page", location: "/about", domain: "http://localhost:600"},
+	reload: ƒ (),
+	state: {
+		lastPath: "/",
+		path: "/",
+		name: "Index Page",
+		location: "/",
+		domain: "http://localhost:600"
+	},
 	__proto__: Object
 }
 ```
-you can get static info from `info` prop even you can invoke your inline component controller
-through each router and component you can creat module <a href=""> see add module </a>,
-by `pubsub` you can have publish/subscripte stratig to access your data intire you project
+through each router and component you can create module <a href=""> see add module </a>,
+by `pubsub` you can have published/subscribe strategy to access your data entire you project.
 
 ### 7. Add Module
 
-module is small part of  `component` or `router` witch might repeat more than onece in thire target.
-for add new module to your project run `ned add` then chose `module` after cli need target of your module witch be router or component, 
-at last you cli gives list of you component or router base on your chose and you should select one of existing target, at the end cli gives you
-help code like below:
-
+The module is a small part of `component` or `router` which might repeat more than once in their target.
+For add, a new module to your project run `ned add` then chose `module` after this part cli need a target of your module witch to be a router or component, at last, cli gives a list of your component or router base on your chose ,and you should select one of the existing targets, at the end cli gives you help code like below:
 ```bash
 [Ned Cli]: Don. Module "chart" added successfully."
 [Ned Cli][Help]:You can now copy and paste module config below on your route/componet.controller() application.
@@ -215,20 +221,58 @@ app.router.controller(function(){
 <module-chart></module-chart>
 ```
 
-as cli mention config of module must be in `routet/component.controller()` and do not forget to pass `this.module.init();`. in the top example module cahrt tag `<module-chart></module-chart>` must be in that target(component/router) html file and each module you define just belong that 
-component/router and you can not use some where else.
+As cli mention config of module must be in `router/component.controller()` and do not forget to pass `this.module.init();`. in the top example module chart tag `<module-chart></module-chart>` must be in that target(component/router) HTML file and each module you define just belong that target and you can not use somewhere else.
 in module `script` file you can call module controller like below
 
 ```javascript
 app.module.controller(function(){ 
-
 	var _self = this;
-
 }); //@module.controller()
 ```
-it the controller and in call-site you have some feature through `this`, if you console out `this` it gives you these info/data:
-```javascript
 
+In the controller and in call-site, you have some feature through `this` if you console out `this` it gives you these info/data:
+
+```javascript
+[Object]:{
+	pubsub: {events: {…}, on: ƒ, off: ƒ, emit: ƒ},
+	state: {
+		lastPath: "/",
+		path: "/",
+		name: "Index Page",
+		location: "/",
+		domain: "http://localhost:600"
+	},
+	__proto__: Object
+}
+```
+one more thing remind each module tag has their own controller, for invoking their controller you can act like below:
+
+```javascript
+app.module.controller(function () {
+
+    let chart = document.getElementsByTagName('chart-static');
+
+	chart[0].controller(function () {
+		var _self = this;
+		_self.element.querySelector('.head').innerHTML = `Module1: <b> ${_self.element.tagName} </b>`
+	});
+
+	chart[1].controller(function () {
+		var _self = this;
+		_self.element.querySelector('.head').innerHTML = `Module2: <b> ${_self.element.tagName} </b>`
+	});
+		
+}); // @module.controller()
+```
+
+in this example we have a module with the name of `<chart-static></chart-static>` so we get all these tags as an array with the variable name of `chart`, now you can point each index if chart tag and get property of `controller`.
+in this `controller` call-site you can get these properties:
+```javascript
+[Object]:{
+	pubsub: {events: {…}, on: ƒ, off: ƒ, emit: ƒ},
+	state: {lastPath: "/", path: "/", name: "Index Page", location: "/", domain: "http://localhost:600"},
+	__proto__: Object
+}
 ```
 
 
