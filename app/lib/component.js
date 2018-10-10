@@ -22,20 +22,6 @@ export const component_initial = () => {
     }
 } // @Function: component_initial()
 
-export const component_controller = (_callback) => {
-    let _controllerName = history.state.path;
-    let _this = _fnthis("component")
-
-    //TODO: add way to find witch function for component and root
-    if (!GlobVarb.map_controller.components[_controllerName])
-        GlobVarb.map_controller.components[_controllerName] = [];
-
-    GlobVarb.map_controller.components[_controllerName].push(
-        _callback.bind(_this)
-    );
-    _callback.bind(_this)();
-} // @Function: component_controller( callback )
-
 
 const component_load = (_path) => {
 
@@ -64,3 +50,19 @@ const component_load = (_path) => {
         throw new Error("HTML Does not defind.");
     }
 } // @Function: component_load(_path)
+
+
+export const component_controller = (_callback) => {
+    let _controllerName = history.state.path;
+    let _this = _fnthis("component")
+    delete _this.info
+
+    //TODO: add way to find witch function for component and root
+    if (!GlobVarb.map_controller.components[_controllerName])
+        GlobVarb.map_controller.components[_controllerName] = [];
+
+    GlobVarb.map_controller.components[_controllerName].push(
+        _callback.bind(_this)
+    );
+    _callback.bind(_this)();
+} // @Function: component_controller( callback )

@@ -19,15 +19,6 @@ export var component_initial = function () {
         component_load(key[i]);
     }
 }; // @Function: component_initial()
-export var component_controller = function (_callback) {
-    var _controllerName = history.state.path;
-    var _this = _fnthis("component");
-    //TODO: add way to find witch function for component and root
-    if (!GlobVarb.map_controller.components[_controllerName])
-        GlobVarb.map_controller.components[_controllerName] = [];
-    GlobVarb.map_controller.components[_controllerName].push(_callback.bind(_this));
-    _callback.bind(_this)();
-}; // @Function: component_controller( callback )
 var component_load = function (_path) {
     if (GlobVarb.components[_path].html) {
         $ajax("GET", _DynamicURL(GlobVarb.components[_path].html), function (_data) {
@@ -48,4 +39,14 @@ var component_load = function (_path) {
         throw new Error("HTML Does not defind.");
     }
 }; // @Function: component_load(_path)
+export var component_controller = function (_callback) {
+    var _controllerName = history.state.path;
+    var _this = _fnthis("component");
+    delete _this.info;
+    //TODO: add way to find witch function for component and root
+    if (!GlobVarb.map_controller.components[_controllerName])
+        GlobVarb.map_controller.components[_controllerName] = [];
+    GlobVarb.map_controller.components[_controllerName].push(_callback.bind(_this));
+    _callback.bind(_this)();
+}; // @Function: component_controller( callback )
 //# sourceMappingURL=component.js.map

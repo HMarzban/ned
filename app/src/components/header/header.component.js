@@ -1,6 +1,6 @@
 
 app.component.controller(function(){
-   /// console.log(this)
+   console.log(this)
 
     let like = 0;
     let dislike = 0;

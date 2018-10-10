@@ -102,10 +102,10 @@ export const _fnthis = (_target) => {
     } else if (_target == "module") {
         _this = {
             state: history.state,
-            module: {
+            /*module: {
                 add: module_add,
                 init: module_initial
-            },
+            },*/
             pubsub,
         }
     }
