@@ -1,10 +1,10 @@
 
 ## Ned Library
-Ned is: a Super Light VanilaJS library with the ability of the big frameworks for creating a single-page web Application. It gives your application Component and Module features for longer maintainable and scalable project support without worry about the complexity of your project in the feature.
+**Ned is:** a Super Light VanilaJS library with the ability of the big frameworks for creating a single-page web Application. It gives your application Component and Module features for longer maintainable and scalable project support without worry about the complexity of your project in the feature.
 
-Ned come with Cli so you can run `npm i -g ned-lib-cli` and use command line to manage you project.
+Ned come with CLI so you can run `npm i -g ned-lib-cli` and use command line to manage your project.
 
-- [Installation](#installation)
+
 
 ## How start project with Ned:
 
@@ -21,14 +21,14 @@ Ned come with Cli so you can run `npm i -g ned-lib-cli` and use command line to 
 <!--te-->
 
 ## Installation
-Ned library bring you `cli` to manage and develop your project, <a href="https://github.com/HosseinMarzban/ned-cli"> ReadMore </a>
+Ned library bring you `cli` to manage and develop your project easily, <a href="https://github.com/HosseinMarzban/ned-cli"> ReadMore </a>
 > install globaly ned cli, then create your first project.
 
 ```shell
 $ npm install -g ned-lib-cli
 $ ned new <projectName>
 ```
-
+**`<projectName>`** : Name of your Project or Directory you wanna create a starter Project
 
 ## Project File tree
 After you creat you first project `ned cli` gives you starter pack to start and develop.
@@ -74,7 +74,7 @@ After you creat you first project `ned cli` gives you starter pack to start and 
 ## Project Configuration
 
 In `./app/src/` we have a file with the name of `ned.config.js`. with this file `cli` and project dependency injection logics set and handle.
-We have a property called `static`, all static files you want to be loaded in first and in global you have to put in there,`head` and `body` its location of your dependency injection loaded, be careful about your priority of injection.
+We have a property called `static`, all static files you want to be loaded in first and in global you have to put in there,`head` or `body` its location of your dependency injection loaded, ***be careful about your priority of injection***.
 
 ```javascript
     static: {
@@ -90,7 +90,7 @@ We have a property called `static`, all static files you want to be loaded in fi
 ```
 ## Add Router
 
-If you want to add a new route you can simply run `ned add` command and chose `router`, then cli ask for the name of your router which must be unique otherwise gives you a warning. After all, if router created successfully cli gives you help with the code you need in your script:
+If you want to add a new route you can simply run `ned add` command and chose `router`, then cli ask for the name of your router which must be unique otherwise gives you a warning. After all, if router created successfully, At the end, CLI gives you help with the code you need in your script:
 
 ```bash
 [Ned Cli]: Don. Router "profile" added successfully."
@@ -120,9 +120,9 @@ app.router.controller(function(){
 }); // @router.controller()
 ```
 
-Note: all scripts when loaded in Dom object remain, even we remove the script tag so, Ned, after the first-time script loaded to handle it inside of the controller and for the second one just invoke the controller and rerun the script again. So all scripts must be in the controller till Ned runs it after call route.
+**Note:** all scripts when loaded in Dom object remain, even we remove the script tag so, Ned, after the first-time script loaded to handle it inside of the controller and for the second one just invoke the controller and **rerun** the script again. So all scripts must be in the controller till Ned runs it after call route.
 
-in the controller and in call-site, you have some feature through `this`, if you console out `this` it gives you these info/data:
+In the controller and in call-site, you have some feature through `this`, if you console out `this` it gives you these info/data:
 
 ```javascript
 [Object]:{
@@ -149,10 +149,10 @@ in the controller and in call-site, you have some feature through `this`, if you
 You can get static info from `info` prop even you can invoke your inline router controller,
 through each router and component you can create a module ,
 by `pubsub` you can have published/subscribe strategy to access your data entire your project, 
-and `reload` prop gives  you the ability to reload and re-render your current router for your usage proposes.
+and `reload` prop gives  you the ability to **reload** and **re-render** your current router for your usage proposes.
 
 ## Add Component
-If you want to add a new component you can simply run `ned add` command and chose `component`, then cli ask for the name of your component which must be unique otherwise gives you a warning. After all, if component created successfully cli gives you help with the code you need in your script:
+If you want to add a new component you can simply run `ned add` command and chose `component`, then CLI ask for the name of your component which must be unique otherwise gives you a warning. After all, if component created successfully CLI gives you help with the code you need in your script file:
 ```bash
 [Ned Cli]: Don. Component "footer" added successfully."
 [Ned Cli][Help]:You can now copy and paste component config below on your application.
@@ -170,16 +170,16 @@ app.component.add('component-footer',{
 //Put this tag in your static/html:
 <component-footer></component-footer>
 ```
-like router, each component has two controller witch firsts one is in the main inline config and the other one is in the script file which you can use it like below:
+Like router, each component has two controller witch firsts one is in the main inline config and the other one is in the script file which you can use it like below:
 
 ```javascript
 app.component.controller(function(){ 
 	var _self = this;
 }); // @router.controller()
 ```
-Note: all scripts when loaded in Dom object remain, even we remove the script tag so, Ned, after the first-time script loaded to handle it inside of the controller and for the second one just invoke the controller and rerun the script again. So all scripts must be in the controller till Ned runs it after call route.
+**Note:** all scripts when loaded in Dom object remain, even we remove the script tag so, Ned, after the first-time script loaded to handle it inside of the controller and for the second one just invoke the controller and **rerun** the script again. So all scripts must be in the controller till Ned runs it after call route.
 
-in the controller and in call-site, you have some feature through `this`, if you console out `this` it gives you these info/data:
+In the controller and in call-site, you have some feature through `this`, if you console out `this` it gives you these info/data:
 
 ```javascript
 [Object]:{
@@ -196,13 +196,13 @@ in the controller and in call-site, you have some feature through `this`, if you
 	__proto__: Object
 }
 ```
-through each router and component you can create module <a href=""> see add module </a>,
+through each router and component you can create module [see add module](#add-module),
 by `pubsub` you can have published/subscribe strategy to access your data entire you project.
 
 ## Add Module
 
 The module is a small part of `component` or `router` which might repeat more than once in their target.
-For add, a new module to your project run `ned add` then chose `module` after this part cli need a target of your module witch to be a router or component, at last, cli gives a list of your component or router base on your chose ,and you should select one of the existing targets, at the end cli gives you help code like below:
+For add, a new module to your project run `ned add` then chose `module` after this part CLI need a target of your module witch to be a **router** or **component**,then  CLI gives a list of your component or router base on your chose ,and you should select one of the existing targets, at the end cli gives you help code like below:
 ```bash
 [Ned Cli]: Don. Module "chart" added successfully."
 [Ned Cli][Help]:You can now copy and paste module config below on your route/componet.controller() application.
@@ -229,7 +229,7 @@ app.router.controller(function(){
 <module-chart></module-chart>
 ```
 
-As cli mention config of module must be in `router/component.controller()` and do not forget to pass `this.module.init();`. in the top example module chart tag `<module-chart></module-chart>` must be in that target(component/router) HTML file and each module you define just belong that target and you can not use somewhere else.
+As CLI mention config of module must be in `router/component.controller()` and do not forget to pass `this.module.init();`. in the top example module **chart** tag `<module-chart></module-chart>` must be in that target(component/router) HTML file and each module you define just belong that target and you can not use somewhere else.
 in module `script` file you can call module controller like below
 
 ```javascript
@@ -253,7 +253,7 @@ In the controller and in call-site, you have some feature through `this` if you 
 	__proto__: Object
 }
 ```
-one more thing remind each module tag has their own controller, for invoking their controller you can act like below:
+One more thing remind, each module tag has their own controller, for invoking their controller you can act like below:
 
 ```javascript
 app.module.controller(function () {
@@ -273,7 +273,7 @@ app.module.controller(function () {
 }); // @module.controller()
 ```
 
-in this example we have a module with the name of `<chart-static></chart-static>` so we get all these tags as an array with the variable name of `chart`, now you can point each index if chart tag and get property of `controller`.
+In this example we have a module with the name of `<chart-static></chart-static>` so we get all these tags as an array with the variable name of `chart`, now you can point each index if chart tag and get property of `controller`.
 in this `controller` call-site you can get these properties:
 ```javascript
 [Object]:{
@@ -291,6 +291,7 @@ in this `controller` call-site you can get these properties:
 $ ned serve
 ```
 it's brings you up an express server on port `600` with specific config to handle single-page application.
+You can easily change express config in `./app.js` but be vise that, you are using SPA application and you have to redirect all server `route` to one file, which in this project is `./app/src/index.html`.
 
 
 ## Deploy
@@ -301,58 +302,8 @@ $ ned deploy
 ```
 
 Afte exucute this command `cli` ask you target of your serve, and you have to chose between `Nginx`, `Apache` and `node`. it gives you `dist` folder of current project with minification of your code and at last gives you config file to how serve you SPA in target serve.
+<p style='color:orangered'> Still on progress in Js files</p>
 
-
-
-## router example:
-``` javascript
-	/** 
-	*	Path: ./app/src/assets/js/main.script.js 
-	*	Description: load and config your Base router and component.
-	*				 Sugest put this in Global Scope,for access it through 
-	*				 Entire Project.
-	*/
-	
-	let app  =  Router();
-	
-	app.config({
-		//config properties
-	});
-	
-	/**
-	*	How add Route?
-	*	you can add router in two way, one 'bind' or 'multiple' bind
-	*/
-
-	//One bind way:
-	app.addRoute('/',{
-		name:"Dashboard Page",
-		html:"./pages/home/home.page.html",
-		script:"./pages/home/home.script.js",
-		style:"./pages/home/home.style.css",
-		controller: homePageController
-	});
-	
-	//Multiple bind way:
-	app.addRoute({
-		'/posts':{
-			name:"posts Page",
-			html:"./pages/posts/posts.page.html",
-			script:  "./pages/posts/posts.script.js",
-			style:"./pages/posts/posts.style.css",
-			controller:function(){ 
-			
-					console.info("/products controller loaded") ;
-			}
-		},
-		'/posts/archive':{
-			name:"archive Page",
-			html:"./pages/posts/archive/archive.page.html",
-			style:"./pages/posts/archive/archive.style.css"
-			script:"./pages/posts/archive/archive.script.js"
-		}
-	});
-```
 ### `config()` options:
 ``` javascript
 app.config({
@@ -393,19 +344,7 @@ I'm working on it
 
 
 
-
-
-
-what's next:
-Add `cli` for controller better  project.
-Develop  and add `compponet`, `module & plugin` features, for tears project in small pieces for clear and maintable continuous development. 
-Develop in Es6 and maybe in Typescript.
-and so good and useful feature.
-
-Better mention,  I do not plane to add engine template, just router and component. And for DOM manipulation you can use JQUERY or VanilaJs ( JS native ) or what ever library exist for manipulating DOM .
-
-
-
+**Better mention**,  I do not plane to add engine template, just router and component. And for DOM manipulation you can use JQUERY or VanilaJs ( JS native ) or what ever library exist for manipulating DOM .
 
 
 ## The story behands of Ned library
@@ -427,3 +366,18 @@ So, for me as an old fashion developer, it's really hard to migration and learni
 In the other painful things is the fight of which of these frameworks better than the other and it's really hard to choose between these good frameworks.
 
 After all, I decided to get rid of this situation, so I start to develop a library witch just handle Router of SPA and have ability to tear out an application on parts, to approach this concept this library comes with component and module parts just for manage these tears parts of your application.
+
+
+### Develop and Contribute
+1.  `git clone` then change to `base_modular` branch
+2.  `npm i` install dependecy
+3.  `npm i -g tscw-cli` install watcher in global access
+3.  `tscw serve -d` run watcher for change and develope your code
+
+
+#### Quick Links
+- <a target="_blank"  href="https://github.com/HosseinMarzban/ned">ned</a>
+- <a target="_blank"  href="https://github.com/HosseinMarzban/ned-cli">ned-cli</a>
+- <a target="_blank"  href="https://github.com/HosseinMarzban/tscw">tscw-cli</a>
+- <a target="_blank"  href="https://github.com/HosseinMarzban/ned-seed">ned-seed</a>
+- <a target="_blank" href="https://github.com/HosseinMarzban/ned-shards-dashboard-lite"> Ned Shards Dashboard Lite </a>
