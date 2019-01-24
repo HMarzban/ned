@@ -5,7 +5,6 @@
 Ned come with CLI so you can run `npm i -g ned-lib-cli` and use command line to manage your project.
 
 
-
 ## How start project with Ned:
 
 <!--ts-->
@@ -18,6 +17,8 @@ Ned come with CLI so you can run `npm i -g ned-lib-cli` and use command line to 
       * [Module](#add-module)
    * [Develop](#develop)
    * [Deploy](#deploy)
+   * [Develop and Contribute](#Develop-and-Contribute)
+   * [Quick Links, subsystem projects](#Quick-Links)
 <!--te-->
 
 ## Installation
@@ -29,6 +30,9 @@ $ npm install -g ned-lib-cli
 $ ned new <projectName>
 ```
 **`<projectName>`** : Name of your Project or Directory you wanna create a starter Project
+
+### Cli Demo
+<img src="./app/src/assets/img/CliDemo.gif">
 
 ## Project File tree
 After you creat you first project `ned cli` gives you starter pack to start and develop.
@@ -368,14 +372,14 @@ In the other painful things is the fight of which of these frameworks better tha
 After all, I decided to get rid of this situation, so I start to develop a library witch just handle Router of SPA and have ability to tear out an application on parts, to approach this concept this library comes with component and module parts just for manage these tears parts of your application.
 
 
-### Develop and Contribute
+## Develop and Contribute
 1.  `git clone` then change to `base_modular` branch
 2.  `npm i` install dependecy
 3.  `npm i -g tscw-cli` install watcher in global access
 3.  `tscw serve -d` run watcher for change and develope your code
 
 
-#### Quick Links
+## Quick Links
 - <a target="_blank"  href="https://github.com/HosseinMarzban/ned">ned</a>
 - <a target="_blank"  href="https://github.com/HosseinMarzban/ned-cli">ned-cli</a>
 - <a target="_blank"  href="https://github.com/HosseinMarzban/tscw">tscw-cli</a>
