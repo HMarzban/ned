@@ -5,7 +5,8 @@
   "main": "./app.js",
   "scripts": {
     "start": "nodemon ./app.js",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "dev": "tscw serve -d"
   },
   "keywords": [
     "ned",
