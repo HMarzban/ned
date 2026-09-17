@@ -20,7 +20,7 @@
     "type": "git",
     "url": "https://github.com/HosseinMarzban/ned"
   },
-  "license": "Mozilla",
+  "license": "MPL-2.0",
   "author": "Hossein Marzban",
   "dependencies": {
     "express": "^4.16.3",
