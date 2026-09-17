@@ -1,3 +1,6 @@
+## Historical framework experiment
+
+Ned explores routing and components for single-page applications. Source development is preserved on [base_modular](https://github.com/HMarzban/ned/tree/base_modular); the default branch also contains demo and bundled assets. The framework, CLI, starter, dashboard example, and watcher form one historical project family.
 
 ## Ned Library
 
@@ -24,7 +27,7 @@ Ned comes with CLI so you can run `npm i -g ned-lib-cli` and use the command lin
 
 ## Installation
 
-Ned library bring you `cli` to manage and develop your project easily, <a href="https://github.com/HosseinMarzban/ned-cli"> ReadMore </a>
+Ned library bring you `cli` to manage and develop your project easily, <a href="https://github.com/HMarzban/ned-cli"> ReadMore </a>
 > install globally ned cli, then create your first project.
 
 ```shell
@@ -358,11 +361,11 @@ customAttributeNavigate   | `ned-href`
 
 ## How to use in real world project
 
-I'm working on it
+See the [Shards Dashboard integration](https://github.com/HMarzban/ned-shards-dashboard-lite) and [starter application](https://github.com/HMarzban/ned-seed). These are historical examples of the original API.
 
 ## How Ned Library work
 
-I'm working on it
+Ned connects URL routing with application components and modules. DOM manipulation remains the responsibility of application code or an existing library. The [base_modular source branch](https://github.com/HMarzban/ned/tree/base_modular) preserves the implementation; this section is a scope summary rather than a complete architecture specification.
 
 **Better mention**, I do not plan to add an engine template, just router, and component. And for DOM manipulation you can use JQUERY or Vanilla Js ( JS native ) or whatever library exists for manipulating DOM.
 
@@ -395,8 +398,13 @@ After all, I decided to get rid of this situation, so I started to develop a lib
 
 ## Quick Links
 
-- <a target="_blank"  href="https://github.com/HosseinMarzban/ned">ned</a>
-- <a target="_blank"  href="https://github.com/HosseinMarzban/ned-cli">ned-cli</a>
-- <a target="_blank"  href="https://github.com/HosseinMarzban/tscw">tscw-cli</a>
-- <a target="_blank"  href="https://github.com/HosseinMarzban/ned-seed">ned-seed</a>
-- <a target="_blank" href="https://github.com/HosseinMarzban/ned-shards-dashboard-lite"> Ned Shards Dashboard Lite </a>
+- <a target="_blank"  href="https://github.com/HMarzban/ned">ned</a>
+- <a target="_blank"  href="https://github.com/HMarzban/ned-cli">ned-cli</a>
+- <a target="_blank"  href="https://github.com/HMarzban/tscw">tscw-cli</a>
+- <a target="_blank"  href="https://github.com/HMarzban/ned-seed">ned-seed</a>
+- <a target="_blank" href="https://github.com/HMarzban/ned-shards-dashboard-lite"> Ned Shards Dashboard Lite </a>
+
+
+## Related repositories
+
+[Ned CLI](https://github.com/HMarzban/ned-cli) · [Starter](https://github.com/HMarzban/ned-seed) · [Dashboard integration](https://github.com/HMarzban/ned-shards-dashboard-lite) · [TypeScript watcher](https://github.com/HMarzban/tscw)
